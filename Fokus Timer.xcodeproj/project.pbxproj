@@ -10,7 +10,7 @@
 		82E7553924EEA01F0040801A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E7553824EEA01F0040801A /* AppDelegate.swift */; };
 		82E7553B24EEA01F0040801A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E7553A24EEA01F0040801A /* SceneDelegate.swift */; };
 		82E7553E24EEA01F0040801A /* Fokus_Timer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 82E7553C24EEA01F0040801A /* Fokus_Timer.xcdatamodeld */; };
-		82E7554024EEA01F0040801A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E7553F24EEA01F0040801A /* ContentView.swift */; };
+		82E7554024EEA01F0040801A /* MainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E7553F24EEA01F0040801A /* MainScreen.swift */; };
 		82E7554224EEA0210040801A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 82E7554124EEA0210040801A /* Assets.xcassets */; };
 		82E7554524EEA0210040801A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 82E7554424EEA0210040801A /* Preview Assets.xcassets */; };
 		82E7554824EEA0210040801A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 82E7554624EEA0210040801A /* LaunchScreen.storyboard */; };
@@ -40,7 +40,7 @@
 		82E7553824EEA01F0040801A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		82E7553A24EEA01F0040801A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		82E7553D24EEA01F0040801A /* Fokus_Timer.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Fokus_Timer.xcdatamodel; sourceTree = "<group>"; };
-		82E7553F24EEA01F0040801A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		82E7553F24EEA01F0040801A /* MainScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreen.swift; sourceTree = "<group>"; };
 		82E7554124EEA0210040801A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		82E7554424EEA0210040801A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		82E7554724EEA0210040801A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -78,6 +78,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		82C0DEF124F498E100306B40 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				82E7553F24EEA01F0040801A /* MainScreen.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		82E7552C24EEA01F0040801A = {
 			isa = PBXGroup;
 			children = (
@@ -103,7 +111,7 @@
 			children = (
 				82E7553824EEA01F0040801A /* AppDelegate.swift */,
 				82E7553A24EEA01F0040801A /* SceneDelegate.swift */,
-				82E7553F24EEA01F0040801A /* ContentView.swift */,
+				82C0DEF124F498E100306B40 /* View */,
 				82E7554124EEA0210040801A /* Assets.xcassets */,
 				82E7554624EEA0210040801A /* LaunchScreen.storyboard */,
 				82E7554924EEA0210040801A /* Info.plist */,
@@ -271,7 +279,7 @@
 			files = (
 				82E7553924EEA01F0040801A /* AppDelegate.swift in Sources */,
 				82E7553B24EEA01F0040801A /* SceneDelegate.swift in Sources */,
-				82E7554024EEA01F0040801A /* ContentView.swift in Sources */,
+				82E7554024EEA01F0040801A /* MainScreen.swift in Sources */,
 				82E7553E24EEA01F0040801A /* Fokus_Timer.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -445,6 +453,7 @@
 				DEVELOPMENT_TEAM = DS8DA7YN5X;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Fokus Timer/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -466,6 +475,7 @@
 				DEVELOPMENT_TEAM = DS8DA7YN5X;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Fokus Timer/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
