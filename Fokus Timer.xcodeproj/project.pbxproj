@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		820142F9250BC1FE003690ED /* System.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820142F7250BC1FE003690ED /* System.swift */; };
+		820142FA250BC1FE003690ED /* Feedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820142F8250BC1FE003690ED /* Feedback.swift */; };
+		820142FC250BC7D4003690ED /* TimeTrackerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820142FB250BC7D4003690ED /* TimeTrackerViewModel.swift */; };
+		822AB4CF24F774430046E578 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 822AB4CE24F774430046E578 /* WidgetKit.framework */; };
+		822AB4D124F774430046E578 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 822AB4D024F774430046E578 /* SwiftUI.framework */; };
+		822AB4D424F774430046E578 /* FokusTimerWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 822AB4D324F774430046E578 /* FokusTimerWidget.swift */; };
+		822AB4D724F774440046E578 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 822AB4D624F774440046E578 /* Assets.xcassets */; };
+		822AB4D924F774440046E578 /* FokusTimerWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 822AB4D524F774430046E578 /* FokusTimerWidget.intentdefinition */; };
+		822AB4DA24F774440046E578 /* FokusTimerWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 822AB4D524F774430046E578 /* FokusTimerWidget.intentdefinition */; };
+		822AB4DD24F774440046E578 /* FokusTimerWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 822AB4CC24F774430046E578 /* FokusTimerWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		82E7553924EEA01F0040801A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E7553824EEA01F0040801A /* AppDelegate.swift */; };
 		82E7553B24EEA01F0040801A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E7553A24EEA01F0040801A /* SceneDelegate.swift */; };
 		82E7553E24EEA01F0040801A /* Fokus_Timer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 82E7553C24EEA01F0040801A /* Fokus_Timer.xcdatamodeld */; };
@@ -19,6 +29,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		822AB4DB24F774440046E578 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 82E7552D24EEA01F0040801A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 822AB4CB24F774430046E578;
+			remoteInfo = FokusTimerWidgetExtension;
+		};
 		82E7554F24EEA0210040801A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 82E7552D24EEA01F0040801A /* Project object */;
@@ -35,7 +52,31 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		822AB4DE24F774440046E578 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				822AB4DD24F774440046E578 /* FokusTimerWidgetExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		820142F7250BC1FE003690ED /* System.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = System.swift; sourceTree = "<group>"; };
+		820142F8250BC1FE003690ED /* Feedback.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Feedback.swift; sourceTree = "<group>"; };
+		820142FB250BC7D4003690ED /* TimeTrackerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTrackerViewModel.swift; sourceTree = "<group>"; };
+		822AB4CC24F774430046E578 /* FokusTimerWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FokusTimerWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		822AB4CE24F774430046E578 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		822AB4D024F774430046E578 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		822AB4D324F774430046E578 /* FokusTimerWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FokusTimerWidget.swift; sourceTree = "<group>"; };
+		822AB4D524F774430046E578 /* FokusTimerWidget.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = FokusTimerWidget.intentdefinition; sourceTree = "<group>"; };
+		822AB4D624F774440046E578 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		822AB4D824F774440046E578 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		82E7553524EEA01F0040801A /* Fokus Timer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fokus Timer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		82E7553824EEA01F0040801A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		82E7553A24EEA01F0040801A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -54,6 +95,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		822AB4C924F774430046E578 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				822AB4D124F774430046E578 /* SwiftUI.framework in Frameworks */,
+				822AB4CF24F774430046E578 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		82E7553224EEA01F0040801A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -78,6 +128,35 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		820142F6250BC1FE003690ED /* Feedback */ = {
+			isa = PBXGroup;
+			children = (
+				820142F7250BC1FE003690ED /* System.swift */,
+				820142F8250BC1FE003690ED /* Feedback.swift */,
+			);
+			path = Feedback;
+			sourceTree = "<group>";
+		};
+		822AB4CD24F774430046E578 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				822AB4CE24F774430046E578 /* WidgetKit.framework */,
+				822AB4D024F774430046E578 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		822AB4D224F774430046E578 /* FokusTimerWidget */ = {
+			isa = PBXGroup;
+			children = (
+				822AB4D324F774430046E578 /* FokusTimerWidget.swift */,
+				822AB4D524F774430046E578 /* FokusTimerWidget.intentdefinition */,
+				822AB4D624F774440046E578 /* Assets.xcassets */,
+				822AB4D824F774440046E578 /* Info.plist */,
+			);
+			path = FokusTimerWidget;
+			sourceTree = "<group>";
+		};
 		82C0DEF124F498E100306B40 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -92,6 +171,8 @@
 				82E7553724EEA01F0040801A /* Fokus Timer */,
 				82E7555124EEA0210040801A /* Fokus TimerTests */,
 				82E7555C24EEA0220040801A /* Fokus TimerUITests */,
+				822AB4D224F774430046E578 /* FokusTimerWidget */,
+				822AB4CD24F774430046E578 /* Frameworks */,
 				82E7553624EEA01F0040801A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -102,6 +183,7 @@
 				82E7553524EEA01F0040801A /* Fokus Timer.app */,
 				82E7554E24EEA0210040801A /* Fokus TimerTests.xctest */,
 				82E7555924EEA0220040801A /* Fokus TimerUITests.xctest */,
+				822AB4CC24F774430046E578 /* FokusTimerWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -109,6 +191,7 @@
 		82E7553724EEA01F0040801A /* Fokus Timer */ = {
 			isa = PBXGroup;
 			children = (
+				820142F6250BC1FE003690ED /* Feedback */,
 				82E7553824EEA01F0040801A /* AppDelegate.swift */,
 				82E7553A24EEA01F0040801A /* SceneDelegate.swift */,
 				82C0DEF124F498E100306B40 /* View */,
@@ -117,9 +200,11 @@
 				82E7554924EEA0210040801A /* Info.plist */,
 				82E7553C24EEA01F0040801A /* Fokus_Timer.xcdatamodeld */,
 				82E7554324EEA0210040801A /* Preview Content */,
+				820142FB250BC7D4003690ED /* TimeTrackerViewModel.swift */,
 			);
 			path = "Fokus Timer";
 			sourceTree = "<group>";
+			usesTabs = 0;
 		};
 		82E7554324EEA0210040801A /* Preview Content */ = {
 			isa = PBXGroup;
@@ -150,6 +235,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		822AB4CB24F774430046E578 /* FokusTimerWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 822AB4E124F774440046E578 /* Build configuration list for PBXNativeTarget "FokusTimerWidgetExtension" */;
+			buildPhases = (
+				822AB4C824F774430046E578 /* Sources */,
+				822AB4C924F774430046E578 /* Frameworks */,
+				822AB4CA24F774430046E578 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FokusTimerWidgetExtension;
+			productName = FokusTimerWidgetExtension;
+			productReference = 822AB4CC24F774430046E578 /* FokusTimerWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		82E7553424EEA01F0040801A /* Fokus Timer */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 82E7556224EEA0220040801A /* Build configuration list for PBXNativeTarget "Fokus Timer" */;
@@ -157,10 +259,12 @@
 				82E7553124EEA01F0040801A /* Sources */,
 				82E7553224EEA01F0040801A /* Frameworks */,
 				82E7553324EEA01F0040801A /* Resources */,
+				822AB4DE24F774440046E578 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				822AB4DC24F774440046E578 /* PBXTargetDependency */,
 			);
 			name = "Fokus Timer";
 			productName = "Fokus Timer";
@@ -212,6 +316,9 @@
 				LastSwiftUpdateCheck = 1200;
 				LastUpgradeCheck = 1200;
 				TargetAttributes = {
+					822AB4CB24F774430046E578 = {
+						CreatedOnToolsVersion = 12.0;
+					};
 					82E7553424EEA01F0040801A = {
 						CreatedOnToolsVersion = 12.0;
 					};
@@ -241,11 +348,20 @@
 				82E7553424EEA01F0040801A /* Fokus Timer */,
 				82E7554D24EEA0210040801A /* Fokus TimerTests */,
 				82E7555824EEA0220040801A /* Fokus TimerUITests */,
+				822AB4CB24F774430046E578 /* FokusTimerWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		822AB4CA24F774430046E578 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				822AB4D724F774440046E578 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		82E7553324EEA01F0040801A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -273,6 +389,15 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		822AB4C824F774430046E578 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				822AB4D424F774430046E578 /* FokusTimerWidget.swift in Sources */,
+				822AB4D924F774440046E578 /* FokusTimerWidget.intentdefinition in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		82E7553124EEA01F0040801A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -280,6 +405,10 @@
 				82E7553924EEA01F0040801A /* AppDelegate.swift in Sources */,
 				82E7553B24EEA01F0040801A /* SceneDelegate.swift in Sources */,
 				82E7554024EEA01F0040801A /* MainScreen.swift in Sources */,
+				822AB4DA24F774440046E578 /* FokusTimerWidget.intentdefinition in Sources */,
+				820142FC250BC7D4003690ED /* TimeTrackerViewModel.swift in Sources */,
+				820142F9250BC1FE003690ED /* System.swift in Sources */,
+				820142FA250BC1FE003690ED /* Feedback.swift in Sources */,
 				82E7553E24EEA01F0040801A /* Fokus_Timer.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -303,6 +432,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		822AB4DC24F774440046E578 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 822AB4CB24F774430046E578 /* FokusTimerWidgetExtension */;
+			targetProxy = 822AB4DB24F774440046E578 /* PBXContainerItemProxy */;
+		};
 		82E7555024EEA0210040801A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 82E7553424EEA01F0040801A /* Fokus Timer */;
@@ -327,6 +461,48 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		822AB4DF24F774440046E578 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = DS8DA7YN5X;
+				INFOPLIST_FILE = FokusTimerWidget/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.indrapp.Fokus-Timer.FokusTimerWidget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		822AB4E024F774440046E578 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = DS8DA7YN5X;
+				INFOPLIST_FILE = FokusTimerWidget/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.indrapp.Fokus-Timer.FokusTimerWidget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		82E7556024EEA0220040801A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -446,6 +622,7 @@
 		82E7556324EEA0220040801A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
@@ -468,6 +645,7 @@
 		82E7556424EEA0220040801A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
@@ -574,6 +752,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		822AB4E124F774440046E578 /* Build configuration list for PBXNativeTarget "FokusTimerWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				822AB4DF24F774440046E578 /* Debug */,
+				822AB4E024F774440046E578 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		82E7553024EEA01F0040801A /* Build configuration list for PBXProject "Fokus Timer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
