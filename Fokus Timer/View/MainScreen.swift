@@ -9,33 +9,93 @@ import SwiftUI
 
 struct MainScreen: View {
     @ObservedObject private var timeTrackerViewModel = TimeTrackerViewModel()
+    @State private var activityName = ""
+    @State var startPos : CGPoint = .zero
+    @State var isSwipping = true
+    
     var body: some View {
         VStack {
             Picker("Something", selection: $timeTrackerViewModel.selectedActivity) {
                 ForEach(ActivityState.allCases) {activity in
                     Text(activity.rawValue.capitalized).tag(activity)
                 }
-            }.padding()
+            }
+                .padding()
+                .animation(.easeIn(duration: 0.4))
+            .disabled(withAnimation(.linear(duration: 0.7)) {
+                isTimerStarted() // TODO: this anim doesn't work, check another way to anim when change disable
+            })
+            .frame(minWidth: 100, idealWidth: 250, maxWidth: 250, minHeight: 100, idealHeight: 100, maxHeight: 100, alignment: .center)
+//                .background(Color.clear) TODO: make picker background clear
+            
             ZStack {
                 Circle()
-                    .padding()
+                    .padding([.bottom, .horizontal])
                     .foregroundColor(Color.init("\(timeTrackerViewModel.selectedActivity.rawValue)"))
                     .animation(.easeIn(duration: 0.4))
                     .onTapGesture{
-                        print("tapped")
+                        timeTrackerViewModel.toggleTimer()
                     }
+                    .padding(.horizontal, 30)
+                    // TODO: shadow
                 
                 Text("Start").font(Font.system(size: 20)).foregroundColor(.init("white"))
             }
             
-                
-            Text("\(timeTrackerViewModel.selectedActivity.rawValue)").foregroundColor(.blue)
+            TextField("Activity Name", text: $activityName)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .disabled(isTimerStarted())
+            
+            HStack {
+                Text("Timer: ")
+                Button(timeTrackerViewModel.alarmState.rawValue) {
+                    timeTrackerViewModel.toggleAlarmState()
+                }
+            }
+            .padding(10)
+            .disabled(isTimerStarted())
+            
+            Spacer(minLength: 150)
         }
-        
+        .padding()
         .pickerStyle(SegmentedPickerStyle())
         .frame(minWidth: 0, idealWidth: 100, maxWidth: .infinity, minHeight: 0, idealHeight: 100, maxHeight: .infinity, alignment: .center )
-        .background(Color.init("white").edgesIgnoringSafeArea(.all))
-        
+        .background(Color("white").edgesIgnoringSafeArea(.all))
+        .gesture(
+            DragGesture(minimumDistance: 50)
+                .onChanged { gesture in
+                    if isSwipping {
+                        startPos = gesture.location
+                        isSwipping.toggle()
+                    }
+                }
+                .onEnded { gesture in
+                    let gestureLocX = gesture.location.x
+                    let xDist =  abs(gestureLocX - startPos.x)
+                    let yDist =  abs(gesture.location.y - startPos.y)
+                    if isSwipeFromFocusToBreak(gestureLocX: gestureLocX, yDist: yDist, xDist: xDist) {
+                        print("Left")
+                        timeTrackerViewModel.toggleSelectedActivity()
+                    }
+                    else if isSwipeFromBreakToFocus(gestureLocX: gestureLocX, yDist: yDist, xDist: xDist) {
+                        print("Right")
+                        timeTrackerViewModel.toggleSelectedActivity()
+                    }
+                    isSwipping.toggle()
+            }
+        )
+    }
+    
+    func isSwipeFromFocusToBreak(gestureLocX: CGFloat, yDist: CGFloat, xDist: CGFloat ) -> Bool {
+        return startPos.x > gestureLocX && yDist < xDist && timeTrackerViewModel.selectedActivity == .focus_time
+    }
+    
+    func isSwipeFromBreakToFocus(gestureLocX: CGFloat, yDist: CGFloat, xDist: CGFloat ) -> Bool {
+        return startPos.x < gestureLocX && yDist < xDist && timeTrackerViewModel.selectedActivity == .break_time
+    }
+    
+    func isTimerStarted() -> Bool {
+        return timeTrackerViewModel.timerState == .started ? true : false
     }
 }
 
@@ -43,11 +103,4 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         MainScreen()
     }
-}
-
-enum ActivityState: String, CaseIterable, Identifiable {
-    case focus_time = "focus"
-    case break_time = "break"
-
-    var id: String { self.rawValue }
 }
