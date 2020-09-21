@@ -10,14 +10,16 @@ import Combine
 
 class TimeTrackerViewModel: ObservableObject {
     @Published var selectedActivity: ActivityState = .focus_time
-    @Published var timerState: TimerState = .idle
-    @Published var alarmState: AlarmState = .off
+    @Published var timeTrackerState: TimeTrackerState = .idle
+    @Published var timerState: TimerState = .off
     @Published var activityTime: Date = Date()
     @Published var timerTimeElapsed = 0
     @Published var activityTitle: String = ""
+    @Published var timerTimeElapsedDisplay = ""
     
-    var setAlarm = 15
+    var timerTime:Double = 15
     var timerCancellable = Set<AnyCancellable>()
+    let notificationManager = NotificationManager()
     
     // MARK: - Intents
     // TODO: This is naive approach, change this to Combine !
@@ -31,33 +33,42 @@ class TimeTrackerViewModel: ObservableObject {
     }
     
     func toggleAlarmState() {
-        switch alarmState {
+        switch timerState {
         case .off:
-            alarmState = .on
+            timerState = .on
         case .on:
-            alarmState = .off
+            timerState = .off
         }
     }
     
     func toggleTimer() {
-        switch timerState {
+        switch timeTrackerState {
         case .idle:
             
             print("timer started")
             // Start Timer and save date to db
-            timerState = .started
+            timeTrackerState = .started
             startTimer()
         case .started:
             print("timer stopped")
             stopTimer()
             // TODO: - make func to update db, then when finished, reset timerState to .idle
         case .stopped:
-            timerState = .idle
+            timeTrackerState = .idle
         default:
             print("not avalilable")
         }
     }
     func startTimer(){
+        timerTimeElapsed = 0
+        $timerTimeElapsed
+            .receive(on: RunLoop.main)
+            .sink { [weak self] int in
+                self?.timerTimeElapsedDisplay = self?.displayTime(second: int) ?? ""
+                print(int)
+            }
+            .store(in: &timerCancellable)
+        
         let startActivityTime = Date()
         print("time started: \(startActivityTime)")
         Timer.publish(every: 1.0, on: .main, in: .common)
@@ -70,18 +81,23 @@ class TimeTrackerViewModel: ObservableObject {
             }
             .sink {[weak self] (recievedTimeStamp) in
                 self?.timerTimeElapsed = recievedTimeStamp
-                print(self?.timerTimeElapsed ?? 0)
+//                print(self?.timerTimeElapsed ?? 0)
             }.store(in: &timerCancellable)
 
-        if alarmState == .on {
-            print("Alarm is on")
+        if timerState == .on {
+            print("Timer is on")
+            notificationManager.notifications = [Notification(id: "com.indrapp.fokus", title: "Yeay! You have finished your Activity", timeInterval: timerTime)]
+            notificationManager.schedule()
             // cancel timerCancellable when timerTimeElapsed is equal to alarm time
             $timerTimeElapsed
                 .receive(on: RunLoop.main)
                 .sink(receiveValue: {value in
-                    if value == self.setAlarm {
+                    if Double(value) == self.timerTime {
+                        // TODO: This doesn't stop the timer if app is in background !!
+                        // Workaround: save current data in db, then if app reappear in foreground, check with db if is finished
                         self.stopTimer()
-                        // TODO: Fire up sound and notification
+                        // TODO: Fire up sound
+                        
                     }
                 }).store(in: &timerCancellable)
         }
@@ -103,7 +119,20 @@ class TimeTrackerViewModel: ObservableObject {
 //            cancellable.cancel()
 //        }
         timerCancellable.removeAll()
-        timerState = .stopped
+        timeTrackerState = .stopped
+    }
+    
+    func displayTime(second: Int) -> String {
+        let hours = "\(second / 3600)"
+        let minutes = "\((second % 3600) / 60)"
+        let seconds = "\((second % 3600) % 60)"
+        let hourStamp = hours.count > 1 ? hours : "0" + hours
+        let minuteStamp = minutes.count > 1 ? minutes : "0" + minutes
+        let secondStamp = seconds.count > 1 ? seconds : "0" + seconds
+        
+        return "\(hourStamp):\(minuteStamp):\(secondStamp)"
     }
     
 }
+
+

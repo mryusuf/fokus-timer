@@ -14,7 +14,7 @@ enum ActivityState: String, CaseIterable, Identifiable {
     var id: String { self.rawValue }
 }
 
-enum TimerState: String, CaseIterable, Identifiable {
+enum TimeTrackerState: String, CaseIterable, Identifiable {
     case idle
     case started
     case paused
@@ -23,9 +23,11 @@ enum TimerState: String, CaseIterable, Identifiable {
     var id: String { self.rawValue }
 }
 
-enum AlarmState: String, CaseIterable, Identifiable {
+enum TimerState: String, CaseIterable, Identifiable {
     case off
     case on
     
     var id: String { self.rawValue }
 }
+
+

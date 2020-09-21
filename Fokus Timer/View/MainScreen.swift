@@ -22,33 +22,43 @@ struct MainScreen: View {
             }
                 .padding()
                 .animation(.easeIn(duration: 0.4))
-            .disabled(withAnimation(.linear(duration: 0.7)) {
-                isTimerStarted() // TODO: this anim doesn't work, check another way to anim when change disable
-            })
-            .frame(minWidth: 100, idealWidth: 250, maxWidth: 250, minHeight: 100, idealHeight: 100, maxHeight: 100, alignment: .center)
+                .disabled(withAnimation(.linear(duration: 0.7)) {
+                    isTimerStarted() // TODO: this anim doesn't work, check another way to anim when change disable
+                })
+                .frame(minWidth: 100, idealWidth: 250, maxWidth: 250, minHeight: 100, idealHeight: 100, maxHeight: 100, alignment: .center)
 //                .background(Color.clear) TODO: make picker background clear
+
+            Text(isTimerStarted() ? timeTrackerViewModel.timerTimeElapsedDisplay:"")
+                .font(.system(size: 40, weight: .semibold))
+                .frame(width: 250, height: 50, alignment: .center)
             
             ZStack {
-                Circle()
-                    .padding([.bottom, .horizontal])
-                    .foregroundColor(Color.init("\(timeTrackerViewModel.selectedActivity.rawValue)"))
-                    .animation(.easeIn(duration: 0.4))
-                    .onTapGesture{
-                        timeTrackerViewModel.toggleTimer()
-                    }
-                    .padding(.horizontal, 30)
-                    // TODO: shadow
+                Color(timeTrackerViewModel.selectedActivity.rawValue)
+                    .clipShape(Circle())
                 
-                Text("Start").font(Font.system(size: 20)).foregroundColor(.init("white"))
+                Image(systemName: isTimerStarted() ? "stop.fill":"play.fill")
+                        .resizable()
+                        .frame(width: 70, height: 75)
+                        .aspectRatio(contentMode: .fit)
+                        .foregroundColor(Color("white"))
+                        .offset(x: isTimerStarted() ? 0: 10.0, y: 0)
+                
             }
+//                .animation(.easeIn(duration: 0.4))
+                .frame(width: 200, height: 200, alignment: .center)
+                .padding(30)
+                .onTapGesture{
+                    timeTrackerViewModel.toggleTimer()
+                }
             
             TextField("Activity Name", text: $activityName)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
+                .frame(width: 300, height: 50, alignment: .center)
                 .disabled(isTimerStarted())
-            
+            Spacer()
             HStack {
                 Text("Timer: ")
-                Button(timeTrackerViewModel.alarmState.rawValue) {
+                Button(timeTrackerViewModel.timerState.rawValue) {
                     timeTrackerViewModel.toggleAlarmState()
                 }
             }
@@ -95,7 +105,7 @@ struct MainScreen: View {
     }
     
     func isTimerStarted() -> Bool {
-        return timeTrackerViewModel.timerState == .started ? true : false
+        return timeTrackerViewModel.timeTrackerState == .started ? true : false
     }
 }
 

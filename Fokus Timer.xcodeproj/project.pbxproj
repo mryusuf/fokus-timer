@@ -18,6 +18,9 @@
 		822AB4D924F774440046E578 /* FokusTimerWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 822AB4D524F774430046E578 /* FokusTimerWidget.intentdefinition */; };
 		822AB4DA24F774440046E578 /* FokusTimerWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 822AB4D524F774430046E578 /* FokusTimerWidget.intentdefinition */; };
 		822AB4DD24F774440046E578 /* FokusTimerWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 822AB4CC24F774430046E578 /* FokusTimerWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		82A767942518D02C00DE8A30 /* TimerRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A767932518D02C00DE8A30 /* TimerRepository.swift */; };
+		82A7679A2518E93C00DE8A30 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A767992518E93C00DE8A30 /* NotificationManager.swift */; };
+		82A767A02518EC8100DE8A30 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A7679F2518EC8100DE8A30 /* Notification.swift */; };
 		82E7553924EEA01F0040801A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E7553824EEA01F0040801A /* AppDelegate.swift */; };
 		82E7553B24EEA01F0040801A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E7553A24EEA01F0040801A /* SceneDelegate.swift */; };
 		82E7553E24EEA01F0040801A /* Fokus_Timer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 82E7553C24EEA01F0040801A /* Fokus_Timer.xcdatamodeld */; };
@@ -79,6 +82,9 @@
 		822AB4D524F774430046E578 /* FokusTimerWidget.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = FokusTimerWidget.intentdefinition; sourceTree = "<group>"; };
 		822AB4D624F774440046E578 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		822AB4D824F774440046E578 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		82A767932518D02C00DE8A30 /* TimerRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerRepository.swift; sourceTree = "<group>"; };
+		82A767992518E93C00DE8A30 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		82A7679F2518EC8100DE8A30 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		82E7553524EEA01F0040801A /* Fokus Timer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fokus Timer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		82E7553824EEA01F0040801A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		82E7553A24EEA01F0040801A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -143,6 +149,7 @@
 			isa = PBXGroup;
 			children = (
 				821CA09F250F938500D35835 /* States.swift */,
+				82A7679F2518EC8100DE8A30 /* Notification.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -212,6 +219,8 @@
 				82E7554324EEA0210040801A /* Preview Content */,
 				820142FB250BC7D4003690ED /* TimeTrackerViewModel.swift */,
 				821CA0A32511082900D35835 /* Model */,
+				82A767932518D02C00DE8A30 /* TimerRepository.swift */,
+				82A767992518E93C00DE8A30 /* NotificationManager.swift */,
 			);
 			path = "Fokus Timer";
 			sourceTree = "<group>";
@@ -417,11 +426,14 @@
 				82E7553924EEA01F0040801A /* AppDelegate.swift in Sources */,
 				82E7553B24EEA01F0040801A /* SceneDelegate.swift in Sources */,
 				82E7554024EEA01F0040801A /* MainScreen.swift in Sources */,
+				82A7679A2518E93C00DE8A30 /* NotificationManager.swift in Sources */,
 				822AB4DA24F774440046E578 /* FokusTimerWidget.intentdefinition in Sources */,
 				820142FC250BC7D4003690ED /* TimeTrackerViewModel.swift in Sources */,
 				820142F9250BC1FE003690ED /* System.swift in Sources */,
+				82A767A02518EC8100DE8A30 /* Notification.swift in Sources */,
 				820142FA250BC1FE003690ED /* Feedback.swift in Sources */,
 				82E7553E24EEA01F0040801A /* Fokus_Timer.xcdatamodeld in Sources */,
+				82A767942518D02C00DE8A30 /* TimerRepository.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
