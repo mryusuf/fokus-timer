@@ -59,6 +59,9 @@ class TimeTrackerViewModel: ObservableObject {
             print("not avalilable")
         }
     }
+    func isTimerStarted() -> Bool {
+        return timeTrackerState == .started ? true : false
+    }
     func startTimer(){
         timerTimeElapsed = 0
         $timerTimeElapsed
