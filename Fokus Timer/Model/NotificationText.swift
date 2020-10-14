@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Notification {
+struct NotificationText {
     var id: String
     var title: String
     var timeInterval: Double

@@ -9,7 +9,7 @@ import Foundation
 import UserNotifications
 
 class NotificationManager {
-    var notifications = [Notification]()
+    var notifications = [NotificationText]()
     
     func listScheduledNotifications() {
         UNUserNotificationCenter.current().getPendingNotificationRequests { notifications in

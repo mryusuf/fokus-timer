@@ -12,6 +12,9 @@
 		820142FA250BC1FE003690ED /* Feedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820142F8250BC1FE003690ED /* Feedback.swift */; };
 		820142FC250BC7D4003690ED /* TimeTrackerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820142FB250BC7D4003690ED /* TimeTrackerViewModel.swift */; };
 		821CA0A0250F938500D35835 /* States.swift in Sources */ = {isa = PBXBuildFile; fileRef = 821CA09F250F938500D35835 /* States.swift */; };
+		8226B29D2536045600C8BB02 /* Keyboard+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8226B29C2536045600C8BB02 /* Keyboard+.swift */; };
+		8226B2A22536058400C8BB02 /* UIResponder+Current.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8226B2A12536058400C8BB02 /* UIResponder+Current.swift */; };
+		8226B2AA253606D900C8BB02 /* KeyboardAdaptiveViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8226B2A9253606D900C8BB02 /* KeyboardAdaptiveViewModifier.swift */; };
 		822AB4CF24F774430046E578 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 822AB4CE24F774430046E578 /* WidgetKit.framework */; };
 		822AB4D124F774430046E578 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 822AB4D024F774430046E578 /* SwiftUI.framework */; };
 		822AB4D424F774430046E578 /* FokusTimerWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 822AB4D324F774430046E578 /* FokusTimerWidget.swift */; };
@@ -22,10 +25,16 @@
 		82448923251BA916001C42BA /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82448922251BA916001C42BA /* Date+.swift */; };
 		82448929251BA961001C42BA /* CoreDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82448928251BA961001C42BA /* CoreDataHelper.swift */; };
 		824A13ED251C8D4300D793DA /* MainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 824A13EC251C8D4300D793DA /* MainScreen.swift */; };
+		8251064F25316C1900957D05 /* TaskList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8251064E25316C1900957D05 /* TaskList.swift */; };
 		82A379E82524CB780073BCE6 /* Calendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A379E72524CB780073BCE6 /* Calendar.swift */; };
 		82A767942518D02C00DE8A30 /* Task+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A767932518D02C00DE8A30 /* Task+.swift */; };
 		82A7679A2518E93C00DE8A30 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A767992518E93C00DE8A30 /* NotificationManager.swift */; };
-		82A767A02518EC8100DE8A30 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A7679F2518EC8100DE8A30 /* Notification.swift */; };
+		82A767A02518EC8100DE8A30 /* NotificationText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A7679F2518EC8100DE8A30 /* NotificationText.swift */; };
+		82B5BACE2529FE08003E1E02 /* DBHelper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82B5BACD2529FE08003E1E02 /* DBHelper.framework */; };
+		82B5BACF2529FE08003E1E02 /* DBHelper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 82B5BACD2529FE08003E1E02 /* DBHelper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		82B5BAD5252B633F003E1E02 /* TaskRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82B5BAD4252B633F003E1E02 /* TaskRow.swift */; };
+		82B5BADA252B705C003E1E02 /* WeekCalendarHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82B5BAD9252B705C003E1E02 /* WeekCalendarHeader.swift */; };
+		82B5BAE2252B76C8003E1E02 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82B5BAE1252B76C8003E1E02 /* DataManager.swift */; };
 		82E7553924EEA01F0040801A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E7553824EEA01F0040801A /* AppDelegate.swift */; };
 		82E7553B24EEA01F0040801A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E7553A24EEA01F0040801A /* SceneDelegate.swift */; };
 		82E7553E24EEA01F0040801A /* Fokus_Timer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 82E7553C24EEA01F0040801A /* Fokus_Timer.xcdatamodeld */; };
@@ -73,6 +82,17 @@
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		82B5BAD02529FE08003E1E02 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				82B5BACF2529FE08003E1E02 /* DBHelper.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -81,6 +101,9 @@
 		820142F8250BC1FE003690ED /* Feedback.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Feedback.swift; sourceTree = "<group>"; };
 		820142FB250BC7D4003690ED /* TimeTrackerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTrackerViewModel.swift; sourceTree = "<group>"; };
 		821CA09F250F938500D35835 /* States.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = States.swift; sourceTree = "<group>"; };
+		8226B29C2536045600C8BB02 /* Keyboard+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Keyboard+.swift"; sourceTree = "<group>"; };
+		8226B2A12536058400C8BB02 /* UIResponder+Current.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIResponder+Current.swift"; sourceTree = "<group>"; };
+		8226B2A9253606D900C8BB02 /* KeyboardAdaptiveViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardAdaptiveViewModifier.swift; sourceTree = "<group>"; };
 		822AB4CC24F774430046E578 /* FokusTimerWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FokusTimerWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		822AB4CE24F774430046E578 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		822AB4D024F774430046E578 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -91,10 +114,15 @@
 		82448922251BA916001C42BA /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
 		82448928251BA961001C42BA /* CoreDataHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataHelper.swift; sourceTree = "<group>"; };
 		824A13EC251C8D4300D793DA /* MainScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreen.swift; sourceTree = "<group>"; };
+		8251064E25316C1900957D05 /* TaskList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskList.swift; sourceTree = "<group>"; };
 		82A379E72524CB780073BCE6 /* Calendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calendar.swift; sourceTree = "<group>"; };
 		82A767932518D02C00DE8A30 /* Task+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+.swift"; sourceTree = "<group>"; };
 		82A767992518E93C00DE8A30 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
-		82A7679F2518EC8100DE8A30 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
+		82A7679F2518EC8100DE8A30 /* NotificationText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationText.swift; sourceTree = "<group>"; };
+		82B5BACD2529FE08003E1E02 /* DBHelper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DBHelper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		82B5BAD4252B633F003E1E02 /* TaskRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskRow.swift; sourceTree = "<group>"; };
+		82B5BAD9252B705C003E1E02 /* WeekCalendarHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekCalendarHeader.swift; sourceTree = "<group>"; };
+		82B5BAE1252B76C8003E1E02 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		82E7553524EEA01F0040801A /* Fokus Timer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fokus Timer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		82E7553824EEA01F0040801A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		82E7553A24EEA01F0040801A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -126,6 +154,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				82B5BACE2529FE08003E1E02 /* DBHelper.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -159,14 +188,25 @@
 			isa = PBXGroup;
 			children = (
 				821CA09F250F938500D35835 /* States.swift */,
-				82A7679F2518EC8100DE8A30 /* Notification.swift */,
+				82A7679F2518EC8100DE8A30 /* NotificationText.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		8226B2AE253606E600C8BB02 /* KeyboardAdaptive */ = {
+			isa = PBXGroup;
+			children = (
+				8226B29C2536045600C8BB02 /* Keyboard+.swift */,
+				8226B2A12536058400C8BB02 /* UIResponder+Current.swift */,
+				8226B2A9253606D900C8BB02 /* KeyboardAdaptiveViewModifier.swift */,
+			);
+			path = KeyboardAdaptive;
 			sourceTree = "<group>";
 		};
 		822AB4CD24F774430046E578 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				82B5BACD2529FE08003E1E02 /* DBHelper.framework */,
 				822AB4CE24F774430046E578 /* WidgetKit.framework */,
 				822AB4D024F774430046E578 /* SwiftUI.framework */,
 			);
@@ -191,6 +231,9 @@
 				824A13EC251C8D4300D793DA /* MainScreen.swift */,
 				82003314252317270064D16E /* PagerView.swift */,
 				82A379E72524CB780073BCE6 /* Calendar.swift */,
+				82B5BAD4252B633F003E1E02 /* TaskRow.swift */,
+				82B5BAD9252B705C003E1E02 /* WeekCalendarHeader.swift */,
+				8251064E25316C1900957D05 /* TaskList.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -236,6 +279,8 @@
 				82A767992518E93C00DE8A30 /* NotificationManager.swift */,
 				82448922251BA916001C42BA /* Date+.swift */,
 				82448928251BA961001C42BA /* CoreDataHelper.swift */,
+				82B5BAE1252B76C8003E1E02 /* DataManager.swift */,
+				8226B2AE253606E600C8BB02 /* KeyboardAdaptive */,
 			);
 			path = "Fokus Timer";
 			sourceTree = "<group>";
@@ -295,6 +340,7 @@
 				82E7553224EEA01F0040801A /* Frameworks */,
 				82E7553324EEA01F0040801A /* Resources */,
 				822AB4DE24F774440046E578 /* Embed App Extensions */,
+				82B5BAD02529FE08003E1E02 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -437,22 +483,29 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8251064F25316C1900957D05 /* TaskList.swift in Sources */,
+				8226B2A22536058400C8BB02 /* UIResponder+Current.swift in Sources */,
 				82448923251BA916001C42BA /* Date+.swift in Sources */,
+				82B5BAE2252B76C8003E1E02 /* DataManager.swift in Sources */,
 				821CA0A0250F938500D35835 /* States.swift in Sources */,
 				82E7553924EEA01F0040801A /* AppDelegate.swift in Sources */,
 				82E7553B24EEA01F0040801A /* SceneDelegate.swift in Sources */,
 				82003315252317270064D16E /* PagerView.swift in Sources */,
 				82E7554024EEA01F0040801A /* TaskTrackerScreen.swift in Sources */,
+				82B5BADA252B705C003E1E02 /* WeekCalendarHeader.swift in Sources */,
 				82A7679A2518E93C00DE8A30 /* NotificationManager.swift in Sources */,
 				822AB4DA24F774440046E578 /* FokusTimerWidget.intentdefinition in Sources */,
 				820142FC250BC7D4003690ED /* TimeTrackerViewModel.swift in Sources */,
 				820142F9250BC1FE003690ED /* System.swift in Sources */,
-				82A767A02518EC8100DE8A30 /* Notification.swift in Sources */,
+				82A767A02518EC8100DE8A30 /* NotificationText.swift in Sources */,
 				82448929251BA961001C42BA /* CoreDataHelper.swift in Sources */,
 				820142FA250BC1FE003690ED /* Feedback.swift in Sources */,
 				824A13ED251C8D4300D793DA /* MainScreen.swift in Sources */,
 				82A379E82524CB780073BCE6 /* Calendar.swift in Sources */,
+				82B5BAD5252B633F003E1E02 /* TaskRow.swift in Sources */,
 				82E7553E24EEA01F0040801A /* Fokus_Timer.xcdatamodeld in Sources */,
+				8226B29D2536045600C8BB02 /* Keyboard+.swift in Sources */,
+				8226B2AA253606D900C8BB02 /* KeyboardAdaptiveViewModifier.swift in Sources */,
 				82A767942518D02C00DE8A30 /* Task+.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

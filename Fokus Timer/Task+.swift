@@ -6,20 +6,38 @@
 //
 
 import Foundation
+import CoreData
 
 extension Task {
     var taskType: ActivityState {
         ActivityState(rawValue: type ?? "") ?? .break_time
     }
-    
+
     var titleText: String {
-        title ?? "My activity"
+        if title != "" {
+            return title!
+        } else {
+            return "My activity"
+        }
     }
     var dateText: String {
         time_start?.fullDate ?? Date().fullDate
     }
     var timeText: String {
-        time_start?.shortTime ?? Date().shortTime
+        var str = ""
+        if let time_start = time_start, let time_stop = time_stop {
+            let diffComponents = Calendar.current.dateComponents([.hour, .minute, .second], from: time_start, to: time_stop)
+            let hours = diffComponents.hour?.description
+            let minutes = diffComponents.minute?.description
+            let seconds = diffComponents.second?.description
+            if let hours = hours, let minutes = minutes, let seconds = seconds {
+                let hourStamp = hours.count > 1 ? hours : "0" + hours
+                let minuteStamp = minutes.count > 1 ? minutes : "0" + minutes
+                let secondStamp = seconds.count > 1 ? seconds : "0" + seconds
+                str = "\(hourStamp):\(minuteStamp):\(secondStamp)"
+            }
+        }
+        return str
     }
 }
 

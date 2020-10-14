@@ -35,6 +35,8 @@ fileprivate extension Calendar {
     ) -> [Date] {
         var dates: [Date] = []
         dates.append(interval.start)
+//        print(interval.start)
+//        print(interval.end)
 
         enumerateDates(
             startingAfter: interval.start,
@@ -49,7 +51,8 @@ fileprivate extension Calendar {
                 }
             }
         }
-
+        
+//        print("the date generated: \(dates.last)")
         return dates
     }
 }
@@ -91,33 +94,36 @@ struct CalendarView<DateView>: View where DateView: View {
     }
 
     private func header(for month: Date) -> some View {
-        let component = calendar.component(.month, from: month)
+        let component = calendar.component(.weekdayOrdinal, from: month)
         let formatter = component == 1 ? DateFormatter.monthAndYear : .month
         let dayFormatter = DateFormatter.day
         return Group {
             if showHeaders {
                 Text(formatter.string(from: month))
                     .font(.title)
-                    .bold()
+                    .fontWeight(.semibold)
+                    .foregroundColor(Color("black"))
                     .padding()
             }
             LazyVGrid(columns: Array(repeating: GridItem(), count: 7)) {
                 ForEach(days(for: month), id: \.self) { day in
                     Text(dayFormatter.string(from: day))
+                        .foregroundColor(Color("gray"))
+                        .font(.system(size: 14))
                 }
             }
             Divider()
         }
     }
 
-    private func days(for month: Date) -> [Date] {
+    private func days(for date: Date) -> [Date] {
         guard
-            let monthInterval = calendar.dateInterval(of: .weekdayOrdinal, for: month),
-            let monthFirstWeek = calendar.dateInterval(of: .weekOfMonth, for: monthInterval.start),
-            let monthLastWeek = calendar.dateInterval(of: .weekOfMonth, for: monthInterval.end)
+            let weekInterval = calendar.dateInterval(of: .weekOfMonth, for: date),
+            let firstWeek = calendar.dateInterval(of: .weekday, for: weekInterval.start),
+            let lastWeek = calendar.dateInterval(of: .weekday, for: weekInterval.end - 1)
         else { return [] }
         return calendar.generateDates(
-            inside: DateInterval(start: monthFirstWeek.start, end: monthLastWeek.end),
+            inside: DateInterval(start: firstWeek.start, end: lastWeek.end),
             matching: DateComponents(hour: 0, minute: 0, second: 0)
         )
     }
@@ -128,6 +134,7 @@ struct CalendarView_Previews: PreviewProvider {
         CalendarView(interval: .init(), showHeaders: true) { day in
             Text("30")
                 .padding(12)
+                .padding(.horizontal, 3)
                 .background(Color("white"))
                 .cornerRadius(12)
         }
