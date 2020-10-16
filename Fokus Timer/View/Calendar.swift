@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-fileprivate extension DateFormatter {
+extension DateFormatter {
     
     static var day: DateFormatter {
         let formatter = DateFormatter()

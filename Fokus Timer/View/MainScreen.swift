@@ -16,20 +16,22 @@ struct MainScreen: View {
     
     @State var currentDate = Date()
     @State private var selectedDay = 0
-    @State var isSwipping = true
+    @State var isNotSwipping = true
     @State var startPos : CGPoint = .zero
-    @State var isTrackerScreenFullyShown = false
-    
+    var offsetHigh: CGFloat = 0.03
+    var offsetLow: CGFloat  = 0.66
     init() {
         selectedDay = calendar.component(.weekday, from: currentDate)
     }
     
     var body: some View {
-        GeometryReader { geomerty in
+        NavigationView {
+        GeometryReader { geometry in
             Color("white").edgesIgnoringSafeArea(.all)
-            if taskTrackerScreenOffset > geomerty.size.height * 0.03 {
+//            if taskTrackerScreenOffset > geomerty.size.height * 0.03 {
+            if isNotSwipping && taskTrackerScreenOffset > UIScreen.main.bounds.height * offsetHigh {
                 VStack {
-                    CalendarView(interval: .init()) { date in
+                    CalendarView(interval: .init(), showHeaders: false) { date in
                         if isCurrentDate(date: date) {
                             WeekCalendarHeader(date: date, backgroundColor: isSelectedDateIsToday(date: date) ? Color("focus") : Color.clear, foregroundColor: isSelectedDateIsToday(date: date) ? Color("white") : Color("focus"), dateString: getCurrentDate(date: date))
                                 .onTapGesture {
@@ -43,72 +45,108 @@ struct MainScreen: View {
                         }
                     }
                     TaskList(focusTasks: $timeTrackerViewModel.todayFocusTasks, breakTasks: $timeTrackerViewModel.todayBreakTasks)
+                        .frame(minHeight: 0, idealHeight: UIScreen.main.bounds.height * 0.5, maxHeight: UIScreen.main.bounds.height * 0.5)
                 }
-                .disabled(!isSwipping ? true : false)
-//                .overlay(!isSwipping ? Color("overlay") : Color.clear)
+                .disabled(!isNotSwipping ? true : false)
+//                .animation(.linear(duration: 0.4))
+                // animation should be onappear and ondisappear
             }
             
-            TaskTrackerScreen(timeTrackerViewModel: _timeTrackerViewModel, isFullyShown: $isTrackerScreenFullyShown)
+            TaskTrackerScreen(timeTrackerViewModel: _timeTrackerViewModel, isFullyShown: $timeTrackerViewModel.isTrackerScreenFullyShown)
                 .background(Color(timeTrackerViewModel.selectedActivity.rawValue))
                 .clipShape(RoundedRectangle(cornerRadius: 20))
-                .offset(y: !timeTrackerViewModel.isTimerStarted() ? taskTrackerScreenOffset : geomerty.size.height * 0.03)
+                .offset(y: !timeTrackerViewModel.isTimerStarted() ? taskTrackerScreenOffset : UIScreen.main.bounds.height * offsetHigh)
                 .offset(y: taskTrackerTranslation)
-                .animation(.spring(response: 0.1, dampingFraction: 2, blendDuration: 0.01))
+                .animation(.interactiveSpring())
                 .gesture(
                     DragGesture()
-                        .updating($taskTrackerTranslation) { value, state, _ in
-                            // Add drag effect only when taskTrackerScreen is down
-                            if taskTrackerScreenOffset >= geomerty.size.height * 0.8 {
-                                state = value.translation.height
+                        .updating($taskTrackerTranslation) { gesture, state, _ in
+                            // Add drag effect only when taskTrackerScreen is up and swipe downs
+                            if (taskTrackerScreenOffset >= UIScreen.main.bounds.height * offsetLow || (taskTrackerScreenOffset < UIScreen.main.bounds.height * offsetLow && startPos.y < gesture.location.y)) {
+                                if timeTrackerViewModel.isTrackerScreenFullyShown && gesture.translation.height < 10 {
+                                    state = 0
+                                } else {
+                                    state = gesture.translation.height
+//                                    isNotSwipping = false
+                                }
+                                print("state \(state)")
                             }
+                            
                         }
                         .onChanged { gesture in
-                            if isSwipping {
-                                startPos = gesture.location
-                                isSwipping.toggle()
+                            startPos = gesture.location
+                            if isNotSwipping {
+                                if startPos.y < UIScreen.main.bounds.height / 5 {
+                                    isNotSwipping.toggle()
+                                }
                             }
                         }
                         .onEnded { gesture in
                             if !timeTrackerViewModel.isTimerStarted() {
+                                if timeTrackerViewModel.isTrackerScreenFullyShown {
+                                    // Handle Horizontal Swipe
+                                    let gestureLocX = gesture.location.x
+                                    let xDist =  abs(gestureLocX - startPos.x)
+                                    let yDist =  abs(gesture.location.y - startPos.y)
+                                    if isSwipeFromFocusToBreak(gestureLocX: gestureLocX, yDist: yDist, xDist: xDist) {
+                                        timeTrackerViewModel.toggleSelectedActivity()
+                                        timeTrackerViewModel.playHapticEngine()
+                                    }
+                                    else if isSwipeFromBreakToFocus(gestureLocX: gestureLocX, yDist: yDist, xDist: xDist) {
+                                        timeTrackerViewModel.toggleSelectedActivity()
+                                        timeTrackerViewModel.playHapticEngine()
+                                    }
+                                }
                                 // Handle Vertical Swipe
-                                if gesture.translation.height < geomerty.size.height * 0.18 {
-                                    taskTrackerScreenOffset = geomerty.size.height * 0.03
-                                    print("up with offset \(taskTrackerScreenOffset)")
-                                    isTrackerScreenFullyShown = true
-                                } else {
-                                    taskTrackerScreenOffset = geomerty.size.height * 0.8
-                                    
+//                                print("gesture translation height \(gesture.translation.height)")
+                                 if gesture.translation.height < -10 {
+                                    taskTrackerScreenOffset = UIScreen.main.bounds.height * offsetHigh
+                                    print("up with offset \(gesture.translation.height)")
+                                    timeTrackerViewModel.isTrackerScreenFullyShown = true
+                                    isNotSwipping = false
+                                    timeTrackerViewModel.playHapticEngine()
+                                } else if gesture.translation.height > 60 {
+                                    taskTrackerScreenOffset = UIScreen.main.bounds.height * offsetLow
+                                    isNotSwipping = true
                                     print("down with offset \(taskTrackerScreenOffset)")
-                                    isTrackerScreenFullyShown = false
+                                    timeTrackerViewModel.isTrackerScreenFullyShown = false
+                                    timeTrackerViewModel.playHapticEngine()
                                 }
-                                // Handle Horizontal Swipe
-                                let gestureLocX = gesture.location.x
-                                let xDist =  abs(gestureLocX - startPos.x)
-                                let yDist =  abs(gesture.location.y - startPos.y)
-                                if isSwipeFromFocusToBreak(gestureLocX: gestureLocX, yDist: yDist, xDist: xDist) {
-                                    timeTrackerViewModel.toggleSelectedActivity()
-                                }
-                                else if isSwipeFromBreakToFocus(gestureLocX: gestureLocX, yDist: yDist, xDist: xDist) {
-                                    timeTrackerViewModel.toggleSelectedActivity()
-                                }
-                                isSwipping.toggle()
                             }
                         }
                 )
                 .edgesIgnoringSafeArea(.bottom)
-                .onAppear(perform: {
-                    if timeTrackerViewModel.unfinishedTaskExist() {
-                        taskTrackerScreenOffset = geomerty.size.height * 0.03
-                        isTrackerScreenFullyShown = true
-                    } else {
-                        taskTrackerScreenOffset = geomerty.size.height * 0.8
-                    }
-                })
-        }
-    }
-}
+                
+            }
+        
+        .navigationBarItems(
+            trailing:
+                NavigationLink(destination: SettingsView()) {
+                    Image(systemName: "gearshape.fill")
+                }
+                
+        )
+        .navigationBarTitle(DateFormatter.month.string(from: currentDate), displayMode: .large)
+        .navigationBarHidden(timeTrackerViewModel.isTrackerScreenFullyShown || !isNotSwipping)
+        .onAppear(perform: {
+            if timeTrackerViewModel.unfinishedTaskExist() {
+                print("there is an unfinished task")
+                taskTrackerScreenOffset = UIScreen.main.bounds.height * offsetHigh
+                timeTrackerViewModel.isTrackerScreenFullyShown = true
+            } else {
+                timeTrackerViewModel.isTrackerScreenFullyShown = false
+                taskTrackerScreenOffset = UIScreen.main.bounds.height * offsetLow
+                print(taskTrackerScreenOffset)
+            }
+        })
+        } // NavigationView
+    } // Body
+} // MainScreen
 
 extension MainScreen {
+    func isSwipeDown(gestureLocY: CGFloat, yDist: CGFloat) -> Bool {
+        return startPos.y < gestureLocY
+    }
     func isSwipeFromFocusToBreak(gestureLocX: CGFloat, yDist: CGFloat, xDist: CGFloat ) -> Bool {
         return startPos.x > gestureLocX && yDist < xDist && timeTrackerViewModel.selectedActivity == .focus_time
     }

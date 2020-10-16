@@ -48,8 +48,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        let timeRecieved = Date()
         let id = notification.request.identifier
         print("Notification with id \(id) is received")
+        if let unfinishedTask = DataManager.shared.fetchUnfinishedTask() {
+            DataManager.shared.updateUnfinishedTask(for: unfinishedTask, timeStop: timeRecieved)
+        }
         completionHandler([.list, .badge, .sound])
     }
 

@@ -12,21 +12,34 @@ struct TaskList: View {
     @Binding var breakTasks: [Task]
     var body: some View {
         ScrollView {
-            Section(header: CustomHeader(title: "Focus", color: Color("focus"))) {
-                if focusTasks.count > 0 {
-                    ForEach(focusTasks) { task in
-                        TaskRow(task: task).padding()
+            if focusTasks.count == 0 {
+                
+            } else {
+                Section(header: CustomHeader(title: "Focus", color: Color("focus"))) {
+                    if focusTasks.count > 0 {
+                        ForEach(focusTasks) { task in
+                            TaskRow(task: task)
+                                .padding(.horizontal)
+                                .padding(.vertical, 4)
+                        }
                     }
                 }
-            }.textCase(.none)
-            Section(header: CustomHeader(title: "Break", color: Color("break"))) {
-                if breakTasks.count > 0 {
-                    ForEach(breakTasks) { task in
-                        TaskRow(task: task).padding()
+            }
+            if breakTasks.count == 0 {
+                
+            } else {
+                Section(header: CustomHeader(title: "Break", color: Color("break"))) {
+                    if breakTasks.count > 0 {
+                        ForEach(breakTasks) { task in
+                            TaskRow(task: task)
+                                .padding(.horizontal)
+                                .padding(.vertical, 4)
+                        }
                     }
                 }
-            }.textCase(.none)
+            }
         }
+        .textCase(.none)
     }
 }
 

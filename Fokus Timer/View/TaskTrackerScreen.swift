@@ -22,7 +22,7 @@ struct TaskTrackerScreen: View {
                         Text("Swipe up to track new task")
                             .padding()
                             .foregroundColor(Color("white"))
-                            .animation(.spring())
+//                            .animation(.spring())
                     } else {
                         Picker("TaskType", selection: $timeTrackerViewModel.selectedActivity) {
                             ForEach(ActivityState.allCases) {activity in
@@ -33,6 +33,9 @@ struct TaskTrackerScreen: View {
                         .disabled(withAnimation(.linear(duration: 0.7)) {
                             timeTrackerViewModel.isTimerStarted() // TODO: this anim doesn't work, check another way to anim when change disable
                         })
+                        .onChange(of: timeTrackerViewModel.selectedActivity) { value in
+                            timeTrackerViewModel.playHapticEngine()
+                        }
                         .frame(minWidth: 100, idealWidth: 250, maxWidth: 250, minHeight: 100, idealHeight: 100, maxHeight: 100, alignment: .center)
                     //                .background(Color.clear) TODO: make picker background clear
                     }
@@ -42,12 +45,11 @@ struct TaskTrackerScreen: View {
                     Text(timeTrackerViewModel.isTimerStarted() ? timeTrackerViewModel.timerTimeElapsedDisplay:"")
                         .font(.system(size: 60, weight: .semibold))
                         .frame(idealWidth: 280, minHeight: 0, idealHeight: 50)
-                        .animation(.none)
+//                        .animation(.none)
                         .foregroundColor(Color("white"))
                 }
                 }
                 if isFullyShown {
-//                    VStack {
                     
                     Image(systemName: timeTrackerViewModel.isTimerStarted() ? "stop.circle.fill":"play.circle.fill")
                         .resizable()
@@ -57,13 +59,13 @@ struct TaskTrackerScreen: View {
                         .padding(30)
                         .onTapGesture{
                             timeTrackerViewModel.toggleTimer()
+                            timeTrackerViewModel.playSuccessHapticEngine()
                         }
                     
                     TextField("Activity Name", text: $timeTrackerViewModel.activityTitle)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .lineLimit(10)
                         .frame(width: 300, height: 50, alignment: .center)
-                        .background(Color("white"))
-//                    }
                     Spacer()
                     HStack {
                         Text("Timer: ")
@@ -75,7 +77,7 @@ struct TaskTrackerScreen: View {
                             Text(timeTrackerViewModel.timerState.rawValue).bold()
                             }
                         )
-                        .foregroundColor(timeTrackerViewModel.timerState.rawValue == "off" ? Color("gray") : .blue)
+                        .foregroundColor(timeTrackerViewModel.timerState.rawValue == "off" ? Color("gray").opacity(0.7) : Color("main_bg"))
                     }
                     .font(.system(size: 20))
                     .padding(.top,50)
@@ -99,7 +101,7 @@ struct TaskTrackerScreen: View {
 //                RoundedRectangle(cornerRadius: 20)
 //                    .frame(width: 50, height: 5, alignment: .center)
 //                Text("Swipe up to track new task")
-//                    .animation(.spring())
+//                    .r(.spring())
 //                Spacer()
 //            }
 //            .padding()

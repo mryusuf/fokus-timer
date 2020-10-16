@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 import Combine
 
 class TimeTrackerViewModel: ObservableObject {
@@ -14,30 +15,37 @@ class TimeTrackerViewModel: ObservableObject {
     @Published var timerState: TimerState = .off
     @Published var activityTime: Date = Date()
     @Published var timerTimeElapsed = 0
-    @Published var activityTitle: String = ""
+    @Published var activityTitle: String = "" {
+        didSet {
+            if activityTitle.count > titleCharacterLimit && oldValue.count <= titleCharacterLimit {
+                activityTitle = oldValue
+            }
+        }
+    }
     @Published var timerTimeElapsedDisplay = ""
     @Published var todayFocusTasks: [Task] = []
     @Published var todayBreakTasks: [Task] = []
     @Published var selectedDate = Date()
+    
+    @Published var isTrackerScreenFullyShown = false
     var startedTask: Task?
-    var timerTime:Double = 15
+    @Published var timerTime:Int = 15
+    var trackerBags = Set<AnyCancellable>()
     var bags = Set<AnyCancellable>()
-    var selectedDateCancellable: AnyCancellable?
     let notificationManager = NotificationManager()
-    
+    let settingsValues = SettingsValues()
     var dataManager = DataManager.shared
-    
+    var titleCharacterLimit = 50
     init() {
-        selectedDateCancellable =
-            $selectedDate
-                .receive(on: RunLoop.main)
+        $selectedDate
+            .receive(on: RunLoop.main)
             .sink { [weak self] date in
                 print("selected date: \(date)")
                 let tasks = self?.dataManager.fetchTasks(for: date)
                 print("fetched task after selected date changes: \(tasks?.count ?? 0)")
                 self?.todayFocusTasks = tasks?.filter {$0.type == ActivityState.focus_time.rawValue} ?? []
                 self?.todayBreakTasks = tasks?.filter {$0.type == ActivityState.break_time.rawValue} ?? []
-            }
+            }.store(in: &bags)
     }
     // MARK: - Intents
     func toggleSelectedActivity() {
@@ -84,12 +92,13 @@ class TimeTrackerViewModel: ObservableObject {
         } else {
             print("time is same")
         }
+        
         $timerTimeElapsed
             .receive(on: RunLoop.main)
             .sink { [weak self] int in
                 self?.timerTimeElapsedDisplay = self?.displayTime(second: int) ?? ""
             }
-            .store(in: &bags)
+            .store(in: &trackerBags)
         
 //        let startActivityTime = Date()
         print("time started: \(startActivityTime)")
@@ -104,24 +113,30 @@ class TimeTrackerViewModel: ObservableObject {
             .sink {[weak self] (recievedTimeStamp) in
                 self?.timerTimeElapsed = recievedTimeStamp
 //                print(self?.timerTimeElapsed ?? 0)
-            }.store(in: &bags)
+            }.store(in: &trackerBags)
 
         if timerState == .on {
-            print("Timer is on")
-            notificationManager.notifications = [NotificationText(id: "com.indrapp.fokus", title: "Yeay! You have finished your Activity", timeInterval: timerTime)]
+            
+            if selectedActivity == .focus_time {
+                timerTime = UserDefaults.standard.integer(forKey: "focus-time")
+            } else if selectedActivity == .break_time {
+                timerTime = settingsValues.breakTime * 60
+            }
+            print("Timer is set \(timerTime) min")
+            notificationManager.notifications = [NotificationText(id: "com.indrapp.fokus", title: "Yeay! You have finished your Activity", timeInterval: Double(timerTime))]
             notificationManager.schedule()
             // cancel timerCancellable when timerTimeElapsed is equal to alarm time
             $timerTimeElapsed
                 .receive(on: RunLoop.main)
                 .sink(receiveValue: {value in
-                    if Double(value) == self.timerTime {
+                    if (value) == self.timerTime {
                         // TODO: This doesn't stop the timer if app is in background !!
                         // Workaround: save current data in db, then if app reappear in foreground, check with db if is finished
                         self.stopTimer()
                         // TODO: Fire up sound
                         
                     }
-                }).store(in: &bags)
+                }).store(in: &trackerBags)
         }
             
     }
@@ -141,7 +156,8 @@ class TimeTrackerViewModel: ObservableObject {
     
     
     func stopTimer() {
-        bags.removeAll()
+        // Check notif and if there's one scheduled cancel em
+        trackerBags.removeAll()
         timeTrackerState = .stopped
         updateStopTimerToCoreData()
         let date = selectedDate
@@ -159,6 +175,16 @@ class TimeTrackerViewModel: ObservableObject {
         } else {
             return false
         }
+    }
+    
+    func playHapticEngine() {
+        let hapticGenerator = UIImpactFeedbackGenerator()
+        hapticGenerator.impactOccurred()
+    }
+    
+    func playSuccessHapticEngine() {
+        let hapticGenerator = UINotificationFeedbackGenerator()
+        hapticGenerator.notificationOccurred(.success)
     }
     
     func displayTime(second: Int) -> String {

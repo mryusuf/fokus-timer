@@ -25,6 +25,9 @@
 		82448923251BA916001C42BA /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82448922251BA916001C42BA /* Date+.swift */; };
 		82448929251BA961001C42BA /* CoreDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82448928251BA961001C42BA /* CoreDataHelper.swift */; };
 		824A13ED251C8D4300D793DA /* MainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 824A13EC251C8D4300D793DA /* MainScreen.swift */; };
+		824B81B2253686F900D9C7C2 /* SettingsValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 824B81B1253686F900D9C7C2 /* SettingsValues.swift */; };
+		824B81B72536871700D9C7C2 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 824B81B62536871700D9C7C2 /* SettingsViewModel.swift */; };
+		824B81BC25368FD300D9C7C2 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 824B81BB25368FD300D9C7C2 /* SettingsView.swift */; };
 		8251064F25316C1900957D05 /* TaskList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8251064E25316C1900957D05 /* TaskList.swift */; };
 		82A379E82524CB780073BCE6 /* Calendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A379E72524CB780073BCE6 /* Calendar.swift */; };
 		82A767942518D02C00DE8A30 /* Task+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A767932518D02C00DE8A30 /* Task+.swift */; };
@@ -114,6 +117,9 @@
 		82448922251BA916001C42BA /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
 		82448928251BA961001C42BA /* CoreDataHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataHelper.swift; sourceTree = "<group>"; };
 		824A13EC251C8D4300D793DA /* MainScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreen.swift; sourceTree = "<group>"; };
+		824B81B1253686F900D9C7C2 /* SettingsValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsValues.swift; sourceTree = "<group>"; };
+		824B81B62536871700D9C7C2 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		824B81BB25368FD300D9C7C2 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		8251064E25316C1900957D05 /* TaskList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskList.swift; sourceTree = "<group>"; };
 		82A379E72524CB780073BCE6 /* Calendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calendar.swift; sourceTree = "<group>"; };
 		82A767932518D02C00DE8A30 /* Task+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+.swift"; sourceTree = "<group>"; };
@@ -189,6 +195,7 @@
 			children = (
 				821CA09F250F938500D35835 /* States.swift */,
 				82A7679F2518EC8100DE8A30 /* NotificationText.swift */,
+				824B81B1253686F900D9C7C2 /* SettingsValues.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -224,6 +231,15 @@
 			path = FokusTimerWidget;
 			sourceTree = "<group>";
 		};
+		824B81C92536B48D00D9C7C2 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				820142FB250BC7D4003690ED /* TimeTrackerViewModel.swift */,
+				824B81B62536871700D9C7C2 /* SettingsViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		82C0DEF124F498E100306B40 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -234,6 +250,7 @@
 				82B5BAD4252B633F003E1E02 /* TaskRow.swift */,
 				82B5BAD9252B705C003E1E02 /* WeekCalendarHeader.swift */,
 				8251064E25316C1900957D05 /* TaskList.swift */,
+				824B81BB25368FD300D9C7C2 /* SettingsView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -273,7 +290,7 @@
 				82E7554924EEA0210040801A /* Info.plist */,
 				82E7553C24EEA01F0040801A /* Fokus_Timer.xcdatamodeld */,
 				82E7554324EEA0210040801A /* Preview Content */,
-				820142FB250BC7D4003690ED /* TimeTrackerViewModel.swift */,
+				824B81C92536B48D00D9C7C2 /* ViewModel */,
 				821CA0A32511082900D35835 /* Model */,
 				82A767932518D02C00DE8A30 /* Task+.swift */,
 				82A767992518E93C00DE8A30 /* NotificationManager.swift */,
@@ -486,6 +503,8 @@
 				8251064F25316C1900957D05 /* TaskList.swift in Sources */,
 				8226B2A22536058400C8BB02 /* UIResponder+Current.swift in Sources */,
 				82448923251BA916001C42BA /* Date+.swift in Sources */,
+				824B81B72536871700D9C7C2 /* SettingsViewModel.swift in Sources */,
+				824B81B2253686F900D9C7C2 /* SettingsValues.swift in Sources */,
 				82B5BAE2252B76C8003E1E02 /* DataManager.swift in Sources */,
 				821CA0A0250F938500D35835 /* States.swift in Sources */,
 				82E7553924EEA01F0040801A /* AppDelegate.swift in Sources */,
@@ -502,6 +521,7 @@
 				820142FA250BC1FE003690ED /* Feedback.swift in Sources */,
 				824A13ED251C8D4300D793DA /* MainScreen.swift in Sources */,
 				82A379E82524CB780073BCE6 /* Calendar.swift in Sources */,
+				824B81BC25368FD300D9C7C2 /* SettingsView.swift in Sources */,
 				82B5BAD5252B633F003E1E02 /* TaskRow.swift in Sources */,
 				82E7553E24EEA01F0040801A /* Fokus_Timer.xcdatamodeld in Sources */,
 				8226B29D2536045600C8BB02 /* Keyboard+.swift in Sources */,
