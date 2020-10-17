@@ -157,6 +157,8 @@ class TimeTrackerViewModel: ObservableObject {
     
     func stopTimer() {
         // Check notif and if there's one scheduled cancel em
+        let notification = UNUserNotificationCenter.current()
+        notification.removeAllPendingNotificationRequests()
         trackerBags.removeAll()
         timeTrackerState = .stopped
         updateStopTimerToCoreData()
