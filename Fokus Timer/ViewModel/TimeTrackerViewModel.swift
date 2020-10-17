@@ -85,12 +85,37 @@ class TimeTrackerViewModel: ObservableObject {
     func isTimerStarted() -> Bool {
         return timeTrackerState == .started ? true : false
     }
-    func startTimer(at startActivityTime: Date = Date()){
+    func startTimer(at time: Date = Date()){
         let dateNow = Date()
+        var startActivityTime = time
         if startActivityTime < dateNow {
             timerTimeElapsed = Int(dateNow.timeIntervalSince(startActivityTime))
         } else {
             print("time is same")
+        }
+        if timerState == .on {
+            if selectedActivity == .focus_time {
+                timerTime = UserDefaults.standard.integer(forKey: "focus-time")
+            } else if selectedActivity == .break_time {
+                timerTime = UserDefaults.standard.integer(forKey: "break-time")
+            }
+            print("Timer is set \(timerTime) s")
+            notificationManager.notifications = [NotificationText(id: "com.indrapp.fokus", title: "Yeay! You have finished your Activity", timeInterval: Double(timerTime))]
+            notificationManager.schedule()
+            timerTimeElapsed = timerTime
+            // cancel timerCancellable when timerTimeElapsed is equal to alarm time
+            $timerTimeElapsed
+                .receive(on: RunLoop.main)
+                .sink { [weak self] value in
+                    if (value) == 0 {
+                        // TODO: This doesn't stop the timer if app is in background !!
+                        // Workaround: save current data in db, then if app reappear in foreground, check with db if is finished
+                        self?.stopTimer()
+                        // TODO: Fire up sound
+                        
+                    }
+                }.store(in: &trackerBags)
+            startActivityTime.addTimeInterval(Double(timerTime + 1))
         }
         
         $timerTimeElapsed
@@ -108,36 +133,15 @@ class TimeTrackerViewModel: ObservableObject {
                 return output.timeIntervalSince(startActivityTime)
             }
             .map {(timeInterval) in
-                return Int(timeInterval)
+                return abs(Int(timeInterval))
             }
             .sink {[weak self] (recievedTimeStamp) in
+                print(recievedTimeStamp)
                 self?.timerTimeElapsed = recievedTimeStamp
 //                print(self?.timerTimeElapsed ?? 0)
             }.store(in: &trackerBags)
 
-        if timerState == .on {
-            
-            if selectedActivity == .focus_time {
-                timerTime = UserDefaults.standard.integer(forKey: "focus-time")
-            } else if selectedActivity == .break_time {
-                timerTime = settingsValues.breakTime * 60
-            }
-            print("Timer is set \(timerTime) min")
-            notificationManager.notifications = [NotificationText(id: "com.indrapp.fokus", title: "Yeay! You have finished your Activity", timeInterval: Double(timerTime))]
-            notificationManager.schedule()
-            // cancel timerCancellable when timerTimeElapsed is equal to alarm time
-            $timerTimeElapsed
-                .receive(on: RunLoop.main)
-                .sink(receiveValue: {value in
-                    if (value) == self.timerTime {
-                        // TODO: This doesn't stop the timer if app is in background !!
-                        // Workaround: save current data in db, then if app reappear in foreground, check with db if is finished
-                        self.stopTimer()
-                        // TODO: Fire up sound
-                        
-                    }
-                }).store(in: &trackerBags)
-        }
+        
             
     }
     func saveStartedTimerToCoreData() {
@@ -159,6 +163,7 @@ class TimeTrackerViewModel: ObservableObject {
         // Check notif and if there's one scheduled cancel em
         let notification = UNUserNotificationCenter.current()
         notification.removeAllPendingNotificationRequests()
+        print("stopTimer()")
         trackerBags.removeAll()
         timeTrackerState = .stopped
         updateStopTimerToCoreData()
@@ -193,11 +198,10 @@ class TimeTrackerViewModel: ObservableObject {
         let hours = "\(second / 3600)"
         let minutes = "\((second % 3600) / 60)"
         let seconds = "\((second % 3600) % 60)"
-        let hourStamp = hours.count > 1 ? hours : "0" + hours
         let minuteStamp = minutes.count > 1 ? minutes : "0" + minutes
         let secondStamp = seconds.count > 1 ? seconds : "0" + seconds
         
-        return "\(hourStamp):\(minuteStamp):\(secondStamp)"
+        return "\(hours):\(minuteStamp):\(secondStamp)"
     }
     
 }

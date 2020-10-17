@@ -31,10 +31,10 @@ extension Task {
             let minutes = diffComponents.minute?.description
             let seconds = diffComponents.second?.description
             if let hours = hours, let minutes = minutes, let seconds = seconds {
-                let hourStamp = hours.count > 1 ? hours : "0" + hours
+//                let hourStamp = hours.count > 1 ? hours : "0" + hours
                 let minuteStamp = minutes.count > 1 ? minutes : "0" + minutes
                 let secondStamp = seconds.count > 1 ? seconds : "0" + seconds
-                str = "\(hourStamp):\(minuteStamp):\(secondStamp)"
+                str = "\(hours):\(minuteStamp):\(secondStamp)"
             }
         }
         return str

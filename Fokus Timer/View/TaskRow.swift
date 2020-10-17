@@ -16,8 +16,9 @@ struct TaskRow: View {
                 .foregroundColor(Color("black"))
             Spacer()
             Text(task.timeText)
-                .font(.subheadline)
+                .font(Font.system(size: 13).monospacedDigit())
                 .foregroundColor(Color("black"))
+                
         }
         .padding(.horizontal)
     }

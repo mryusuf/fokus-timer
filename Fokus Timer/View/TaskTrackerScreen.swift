@@ -43,7 +43,7 @@ struct TaskTrackerScreen: View {
                 else {
                     Spacer()
                     Text(timeTrackerViewModel.isTimerStarted() ? timeTrackerViewModel.timerTimeElapsedDisplay:"")
-                        .font(.system(size: 60, weight: .semibold))
+                        .font(Font.system(size: 60, weight: .semibold).monospacedDigit())
                         .frame(idealWidth: 280, minHeight: 0, idealHeight: 50)
 //                        .animation(.none)
                         .foregroundColor(Color("white"))

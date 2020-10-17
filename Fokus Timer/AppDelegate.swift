@@ -54,7 +54,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         if let unfinishedTask = DataManager.shared.fetchUnfinishedTask() {
             DataManager.shared.updateUnfinishedTask(for: unfinishedTask, timeStop: timeRecieved)
         }
-        completionHandler([.list, .badge, .sound])
+        if #available(iOS 14, *) {
+            completionHandler([.banner, .list, .badge, .sound])
+        } else {
+            completionHandler([.alert, .badge, .sound])
+        }
     }
 
     
