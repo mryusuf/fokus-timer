@@ -39,5 +39,12 @@ extension Task {
         }
         return str
     }
+    var totalTimeInSeconds: Int {
+        if let time_start = time_start, let time_stop = time_stop {
+            return Int(time_stop.timeIntervalSince(time_start))
+        } else {
+            return 0
+        }
+    }
 }
 

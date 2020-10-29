@@ -10,30 +10,34 @@ import SwiftUI
 struct TaskList: View {
     @Binding var focusTasks: [Task]
     @Binding var breakTasks: [Task]
+    @Binding var totalFocusTime: String
+    @Binding var totalBreakTime: String
     var body: some View {
         ScrollView {
-            if focusTasks.count == 0 {
-                
+            if focusTasks.count == 0 && breakTasks.count == 0 {
+                Text("There's no tracked task yet.")
+//                    .frame(alignment: .center)
+                    .padding()
             } else {
-                Section(header: CustomHeader(title: "Focus", color: Color("focus"))) {
-                    if focusTasks.count > 0 {
-                        ForEach(focusTasks) { task in
-                            TaskRow(task: task)
-                                .padding(.horizontal)
-                                .padding(.vertical, 4)
+                if focusTasks.count > 0 {
+                    Section(header: CustomHeader(title: "Focus",time: totalFocusTime, color: Color("focus"))) {
+                        if focusTasks.count > 0 {
+                            ForEach(focusTasks) { task in
+                                TaskRow(task: task)
+                                    .padding(.horizontal)
+                                    .padding(.vertical, 4)
+                            }
                         }
                     }
                 }
-            }
-            if breakTasks.count == 0 {
-                
-            } else {
-                Section(header: CustomHeader(title: "Break", color: Color("break"))) {
-                    if breakTasks.count > 0 {
-                        ForEach(breakTasks) { task in
-                            TaskRow(task: task)
-                                .padding(.horizontal)
-                                .padding(.vertical, 4)
+                if breakTasks.count > 0 {
+                    Section(header: CustomHeader(title: "Break", time: totalBreakTime,color: Color("break"))) {
+                        if breakTasks.count > 0 {
+                            ForEach(breakTasks) { task in
+                                TaskRow(task: task)
+                                    .padding(.horizontal)
+                                    .padding(.vertical, 4)
+                            }
                         }
                     }
                 }
@@ -45,18 +49,25 @@ struct TaskList: View {
 
 struct CustomHeader: View {
     let title: String
+    let time: String
     let color: Color
     var body: some View {
             VStack {
                 Spacer()
                 HStack {
                     Text(title)
-                        .foregroundColor(.white)
-                        .padding(.leading, 20)
+                        .bold()
                     Spacer()
+                    Text(time)
+                        .font((Font.system(size: 14).monospacedDigit()))
+                        .bold()
                 }
+                .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 30))
                 Spacer()
-            }.background(FillColor(color: color))
+            }
+            .background(FillColor(color: color))
+            .foregroundColor(.white)
+        
     }
 }
 

@@ -25,11 +25,21 @@ class TimeTrackerViewModel: ObservableObject {
     @Published var timerTimeElapsedDisplay = ""
     @Published var todayFocusTasks: [Task] = []
     @Published var todayBreakTasks: [Task] = []
+    @Published var totalFocusTime: String = ""
+    @Published var totalBreakTime: String = ""
     @Published var selectedDate = Date()
     
     @Published var isTrackerScreenFullyShown = false
     var startedTask: Task?
-    @Published var timerTime:Int = 15
+    var timerTime:Int  {
+        get {
+            if selectedActivity == .focus_time {
+                return UserDefaults.standard.integer(forKey: "focus-time")
+            } else  {
+                return UserDefaults.standard.integer(forKey: "break-time")
+            }
+        }
+    }
     var trackerBags = Set<AnyCancellable>()
     var bags = Set<AnyCancellable>()
     let notificationManager = NotificationManager()
@@ -41,10 +51,11 @@ class TimeTrackerViewModel: ObservableObject {
             .receive(on: RunLoop.main)
             .sink { [weak self] date in
                 print("selected date: \(date)")
-                let tasks = self?.dataManager.fetchTasks(for: date)
-                print("fetched task after selected date changes: \(tasks?.count ?? 0)")
+                let tasks: [Task]? = self?.dataManager.fetchTasks(for: date)
                 self?.todayFocusTasks = tasks?.filter {$0.type == ActivityState.focus_time.rawValue} ?? []
                 self?.todayBreakTasks = tasks?.filter {$0.type == ActivityState.break_time.rawValue} ?? []
+                self?.totalFocusTime = self?.displayTime(second: self?.todayFocusTasks.reduce(0) {$0 + $1.totalTimeInSeconds} ?? 0) ?? ""
+                self?.totalBreakTime = self?.displayTime(second: self?.todayBreakTasks.reduce(0) {$0 + $1.totalTimeInSeconds} ?? 0) ?? ""
             }.store(in: &bags)
     }
     // MARK: - Intents
@@ -82,7 +93,7 @@ class TimeTrackerViewModel: ObservableObject {
             print("not avalilable")
         }
     }
-    func isTimerStarted() -> Bool {
+    func isTrackerStarted() -> Bool {
         return timeTrackerState == .started ? true : false
     }
     func startTimer(at time: Date = Date()){
@@ -94,13 +105,10 @@ class TimeTrackerViewModel: ObservableObject {
             print("time is same")
         }
         if timerState == .on {
-            if selectedActivity == .focus_time {
-                timerTime = UserDefaults.standard.integer(forKey: "focus-time")
-            } else if selectedActivity == .break_time {
-                timerTime = UserDefaults.standard.integer(forKey: "break-time")
-            }
+            
+            
             print("Timer is set \(timerTime) s")
-            notificationManager.notifications = [NotificationText(id: "com.indrapp.fokus", title: "Yeay! You have finished your Activity", timeInterval: Double(timerTime))]
+            notificationManager.notifications = [NotificationText(id: "com.indrapp.fokus", title: "Congrats!", body: "You have finished your task", timeInterval: Double(timerTime))]
             notificationManager.schedule()
             timerTimeElapsed = timerTime
             // cancel timerCancellable when timerTimeElapsed is equal to alarm time
@@ -108,8 +116,6 @@ class TimeTrackerViewModel: ObservableObject {
                 .receive(on: RunLoop.main)
                 .sink { [weak self] value in
                     if (value) == 0 {
-                        // TODO: This doesn't stop the timer if app is in background !!
-                        // Workaround: save current data in db, then if app reappear in foreground, check with db if is finished
                         self?.stopTimer()
                         // TODO: Fire up sound
                         
@@ -125,7 +131,6 @@ class TimeTrackerViewModel: ObservableObject {
             }
             .store(in: &trackerBags)
         
-//        let startActivityTime = Date()
         print("time started: \(startActivityTime)")
         Timer.publish(every: 1.0, on: .main, in: .common)
             .autoconnect()
@@ -136,9 +141,7 @@ class TimeTrackerViewModel: ObservableObject {
                 return abs(Int(timeInterval))
             }
             .sink {[weak self] (recievedTimeStamp) in
-                print(recievedTimeStamp)
                 self?.timerTimeElapsed = recievedTimeStamp
-//                print(self?.timerTimeElapsed ?? 0)
             }.store(in: &trackerBags)
 
         
@@ -152,21 +155,23 @@ class TimeTrackerViewModel: ObservableObject {
         
     }
     
-    func updateStopTimerToCoreData() {
+    func updateStopTimerToCoreData(timeStop: Date) {
         if let unfinishedTask = dataManager.fetchUnfinishedTask() {
-            dataManager.updateUnfinishedTask(for: unfinishedTask, timeStop: Date())
+            dataManager.updateUnfinishedTask(for: unfinishedTask, timeStop: timeStop)
         }
     }
     
     
-    func stopTimer() {
-        // Check notif and if there's one scheduled cancel em
-        let notification = UNUserNotificationCenter.current()
-        notification.removeAllPendingNotificationRequests()
-        print("stopTimer()")
+    func stopTimer(cancelNotif: Bool = true, timeStop:Date = Date()) {
+        if cancelNotif {
+            // Check notif and if there's one scheduled cancel em
+            let notification = UNUserNotificationCenter.current()
+            notification.removeAllPendingNotificationRequests()
+        }
+
         trackerBags.removeAll()
         timeTrackerState = .stopped
-        updateStopTimerToCoreData()
+        updateStopTimerToCoreData(timeStop: timeStop)
         let date = selectedDate
         timeTrackerState = .idle
         selectedDate = date
@@ -174,9 +179,18 @@ class TimeTrackerViewModel: ObservableObject {
     
     func unfinishedTaskExist() -> Bool {
         if let unfinishedTask = dataManager.fetchUnfinishedTask(), let timeStart = unfinishedTask.time_start {
+            selectedActivity = unfinishedTask.taskType
+            activityTitle = unfinishedTask.titleText
             timeTrackerState = .started
             timerState = TimerState(rawValue: unfinishedTask.timer ?? "off")!
-            startTimer(at: timeStart)
+            let expectedTimeFinished = timeStart.addingTimeInterval(Double(timerTime))
+            print("expectedTimeFinished = \(expectedTimeFinished), timerTime = \(timerTime)")
+            if timerState == .on && expectedTimeFinished <= Date() {
+                print("yes cancel")
+                stopTimer(cancelNotif: false, timeStop: expectedTimeFinished)
+            } else {
+                startTimer(at: timeStart)
+            }
             return true
             
         } else {

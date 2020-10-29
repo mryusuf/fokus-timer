@@ -52,7 +52,6 @@ fileprivate extension Calendar {
             }
         }
         
-//        print("the date generated: \(dates.last)")
         return dates
     }
 }
@@ -60,25 +59,28 @@ fileprivate extension Calendar {
 struct CalendarView<DateView>: View where DateView: View {
     @Environment(\.calendar) var calendar
 
-    let interval: DateInterval
+    @State private var startWeek: Date
+    @Binding private var selectedDate: Date
     let showHeaders: Bool
     let content: (Date) -> DateView
 
     init(
-        interval: DateInterval,
+        startWeek: Date,
+        selectedDate: Binding<Date>,
         showHeaders: Bool = true,
         @ViewBuilder content: @escaping (Date) -> DateView
     ) {
-        self.interval = interval
+        self._startWeek = State(initialValue: startWeek)
+        self._selectedDate = selectedDate
         self.showHeaders = showHeaders
         self.content = content
     }
 
     var body: some View {
         LazyVGrid(columns: Array(repeating: GridItem(), count: 7)) {
-            ForEach(months, id: \.self) { month in
-                Section(header: header(for: month)) {
-                    ForEach(days(for: month), id: \.self) { date in
+            ForEach([months.first], id: \.self) { month in
+                Section(header: header(for: startWeek)) {
+                    ForEach(days(for: month!), id: \.self) { date in
                         content(date).id(date)
                     }
                 }
@@ -87,23 +89,64 @@ struct CalendarView<DateView>: View where DateView: View {
     }
 
     private var months: [Date] {
-        calendar.generateDates(
-            inside: interval,
+        guard let weekInterval = calendar.dateInterval(of: .weekOfMonth, for: startWeek) else { return [] }
+        return calendar.generateDates(
+            inside: weekInterval,
             matching: DateComponents(day: 1, hour: 0, minute: 0, second: 0)
         )
     }
+    
+    func changeDateBy(_ week: Int) {
+        if let date = Calendar.current.date(byAdding: .weekdayOrdinal, value: week, to: startWeek) {
+            self.startWeek = date
+        }
+    }
 
     private func header(for month: Date) -> some View {
-        let component = calendar.component(.weekdayOrdinal, from: month)
+        var monthToDisplay = month
+        if calendar.isDate(selectedDate, equalTo: month, toGranularity: .weekOfYear) {
+//            print("selected date from calendar: \(selectedDate)")
+            monthToDisplay = selectedDate
+        }
+        let component = calendar.component(.weekOfMonth, from: monthToDisplay)
         let formatter = component == 1 ? DateFormatter.monthAndYear : .month
         let dayFormatter = DateFormatter.day
         return Group {
             if showHeaders {
-                Text(formatter.string(from: month))
+                HStack {
+                Text(formatter.string(from: monthToDisplay))
                     .font(.title)
                     .fontWeight(.semibold)
                     .foregroundColor(Color("black"))
                     .padding()
+                Spacer()
+                HStack{
+                    Group{
+                        Button(action: {
+                            self.changeDateBy(-1)
+                        }) {
+                            Image(systemName: "chevron.left.square") //
+                                .resizable()
+                        }
+                        Button(action: {
+                            self.startWeek = Date()
+                        }) {
+                            Image(systemName: "dot.square")
+                                .resizable()
+                        }
+                        Button(action: {
+                            self.changeDateBy(1)
+                        }) {
+                            Image(systemName: "chevron.right.square") //"chevron.right.square"
+                                .resizable()
+                        }
+                    }
+                    .foregroundColor(Color.blue)
+                    .frame(width: 25, height: 25)
+                    
+                }
+                .padding(.trailing, 20)
+                }
             }
             LazyVGrid(columns: Array(repeating: GridItem(), count: 7)) {
                 ForEach(days(for: month), id: \.self) { day in
@@ -129,14 +172,14 @@ struct CalendarView<DateView>: View where DateView: View {
     }
 }
 
-struct CalendarView_Previews: PreviewProvider {
-    static var previews: some View {
-        CalendarView(interval: .init(), showHeaders: true) { day in
-            Text("30")
-                .padding(12)
-                .padding(.horizontal, 3)
-                .background(Color("white"))
-                .cornerRadius(12)
-        }
-    }
-}
+//struct CalendarView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        CalendarView(startWeek: Date(), selectedDat: Date(), showHeaders: true) { day in
+//            Text("30")
+//                .padding(12)
+//                .padding(.horizontal, 3)
+//                .background(Color("white"))
+//                .cornerRadius(12)
+//        }
+//    }
+//}

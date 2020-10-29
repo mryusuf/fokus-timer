@@ -10,5 +10,6 @@ import Foundation
 struct NotificationText {
     var id: String
     var title: String
+    var body: String
     var timeInterval: Double
 }

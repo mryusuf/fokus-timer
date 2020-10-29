@@ -48,6 +48,7 @@ class NotificationManager {
         for notification in notifications {
             let content = UNMutableNotificationContent()
             content.title = notification.title
+            content.body = notification.body
             content.sound = .default
             
             let trigger = UNTimeIntervalNotificationTrigger(timeInterval: notification.timeInterval, repeats: false)

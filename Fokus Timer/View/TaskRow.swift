@@ -13,6 +13,7 @@ struct TaskRow: View {
         HStack {
             Text(task.titleText)
                 .bold()
+                .font(Font.system(size: 13))
                 .foregroundColor(Color("black"))
             Spacer()
             Text(task.timeText)

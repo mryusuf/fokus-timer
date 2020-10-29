@@ -13,7 +13,7 @@ struct TaskTrackerScreen: View {
     var body: some View {
             VStack {
                 Group {
-                if !timeTrackerViewModel.isTimerStarted() {
+                if !timeTrackerViewModel.isTrackerStarted() {
                     RoundedRectangle(cornerRadius: 20)
                         .frame(width: 50, height: 5, alignment: .center)
                         .foregroundColor(Color("white"))
@@ -31,7 +31,7 @@ struct TaskTrackerScreen: View {
                         }
                         .padding(10)
                         .disabled(withAnimation(.linear(duration: 0.7)) {
-                            timeTrackerViewModel.isTimerStarted() // TODO: this anim doesn't work, check another way to anim when change disable
+                            timeTrackerViewModel.isTrackerStarted() // TODO: this anim doesn't work, check another way to anim when change disable
                         })
                         .onChange(of: timeTrackerViewModel.selectedActivity) { value in
                             timeTrackerViewModel.playHapticEngine()
@@ -42,7 +42,7 @@ struct TaskTrackerScreen: View {
                 }
                 else {
                     Spacer()
-                    Text(timeTrackerViewModel.isTimerStarted() ? timeTrackerViewModel.timerTimeElapsedDisplay:"")
+                    Text(timeTrackerViewModel.isTrackerStarted() ? timeTrackerViewModel.timerTimeElapsedDisplay:"")
                         .font(Font.system(size: 60, weight: .semibold).monospacedDigit())
                         .frame(idealWidth: 280, minHeight: 0, idealHeight: 50)
 //                        .animation(.none)
@@ -51,7 +51,7 @@ struct TaskTrackerScreen: View {
                 }
                 if isFullyShown {
                     
-                    Image(systemName: timeTrackerViewModel.isTimerStarted() ? "stop.circle.fill":"play.circle.fill")
+                    Image(systemName: timeTrackerViewModel.isTrackerStarted() ? "stop.circle.fill":"play.circle.fill")
                         .resizable()
                         .frame(width: 250, height: 250)
                         .aspectRatio(contentMode: .fit)
@@ -81,7 +81,7 @@ struct TaskTrackerScreen: View {
                     }
                     .font(.system(size: 20))
                     .padding(.top,50)
-                    .disabled(timeTrackerViewModel.isTimerStarted())
+                    .disabled(timeTrackerViewModel.isTrackerStarted())
                     Spacer()
                 } else {
                     Spacer()

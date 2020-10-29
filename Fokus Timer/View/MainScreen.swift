@@ -26,64 +26,74 @@ struct MainScreen: View {
     
     var body: some View {
         NavigationView {
-        GeometryReader { geometry in
-            Color("white").edgesIgnoringSafeArea(.all)
-//            if taskTrackerScreenOffset > geomerty.size.height * 0.03 {
-            if isNotSwipping && taskTrackerScreenOffset > UIScreen.main.bounds.height * offsetHigh {
-                VStack {
-                    CalendarView(interval: .init(), showHeaders: false) { date in
-                        if isCurrentDate(date: date) {
-                            WeekCalendarHeader(date: date, backgroundColor: isSelectedDateIsToday(date: date) ? Color("focus") : Color.clear, foregroundColor: isSelectedDateIsToday(date: date) ? Color("white") : Color("focus"), dateString: getCurrentDate(date: date))
-                                .onTapGesture {
-                                    timeTrackerViewModel.selectedDate = date
-                                }
-                        } else {
-                            WeekCalendarHeader(date: date, backgroundColor: date == timeTrackerViewModel.selectedDate ? Color("break") : Color.clear, foregroundColor: Color("black"), dateString: getCurrentDate(date: date))
-                                .onTapGesture {
-                                    timeTrackerViewModel.selectedDate = date
-                                }
+            GeometryReader { geometry in
+                Color("white").edgesIgnoringSafeArea(.all)
+                //            if taskTrackerScreenOffset > geomerty.size.height * 0.03 {
+                if isNotSwipping && taskTrackerScreenOffset > UIScreen.main.bounds.height * offsetHigh {
+                    VStack(alignment: .center) {
+                        HStack {
+                            Spacer()
+                            NavigationLink(destination: SettingsView()) {
+                                Image(systemName: "gearshape.fill")
+                            }
+                            .padding(.trailing, 20)
                         }
+                        CalendarView(startWeek: .init(), selectedDate: $timeTrackerViewModel.selectedDate, showHeaders: true) { date in
+                            if isCurrentDate(date: date) {
+                                WeekCalendarHeader(date: date, backgroundColor: isSelectedDateIsToday(date: date) ? Color("focus") : Color.clear, foregroundColor: isSelectedDateIsToday(date: date) ? Color("white") : Color("focus"), dateString: getCurrentDate(date: date))
+                                    .onTapGesture {
+                                        timeTrackerViewModel.selectedDate = date
+                                    }
+                            } else {
+                                WeekCalendarHeader(date: date, backgroundColor: date == timeTrackerViewModel.selectedDate ? Color("break") : Color.clear, foregroundColor: Color("black"), dateString: getCurrentDate(date: date))
+                                    .onTapGesture {
+                                        timeTrackerViewModel.selectedDate = date
+                                    }
+                            }
+                        }
+                        TaskList(focusTasks: $timeTrackerViewModel.todayFocusTasks, breakTasks: $timeTrackerViewModel.todayBreakTasks, totalFocusTime: $timeTrackerViewModel.totalFocusTime, totalBreakTime: $timeTrackerViewModel.totalBreakTime)
+                            .frame(minHeight: 0, idealHeight: UIScreen.main.bounds.height * 0.5, maxHeight: UIScreen.main.bounds.height * 0.5)
                     }
-                    TaskList(focusTasks: $timeTrackerViewModel.todayFocusTasks, breakTasks: $timeTrackerViewModel.todayBreakTasks)
-                        .frame(minHeight: 0, idealHeight: UIScreen.main.bounds.height * 0.5, maxHeight: UIScreen.main.bounds.height * 0.5)
+                    .disabled(!isNotSwipping ? true : false)
+                    //                .animation(.linear(duration: 0.4))
+                    // animation should be onappear and ondisappear
                 }
-                .disabled(!isNotSwipping ? true : false)
-//                .animation(.linear(duration: 0.4))
-                // animation should be onappear and ondisappear
-            }
-            
-            TaskTrackerScreen(timeTrackerViewModel: _timeTrackerViewModel, isFullyShown: $timeTrackerViewModel.isTrackerScreenFullyShown)
-                .background(Color(timeTrackerViewModel.selectedActivity.rawValue))
-                .clipShape(RoundedRectangle(cornerRadius: 20))
-                .offset(y: !timeTrackerViewModel.isTimerStarted() ? taskTrackerScreenOffset : UIScreen.main.bounds.height * offsetHigh)
-                .offset(y: taskTrackerTranslation)
-                .animation(.interactiveSpring())
-                .gesture(
-                    DragGesture()
-                        .updating($taskTrackerTranslation) { gesture, state, _ in
-                            // Add drag effect only when taskTrackerScreen is up and swipe downs
-                            if (taskTrackerScreenOffset >= UIScreen.main.bounds.height * offsetLow || (taskTrackerScreenOffset < UIScreen.main.bounds.height * offsetLow && startPos.y < gesture.location.y)) {
-                                if timeTrackerViewModel.isTrackerScreenFullyShown && gesture.translation.height < 10 {
-                                    state = 0
-                                } else {
-                                    state = gesture.translation.height
-//                                    isNotSwipping = false
+                
+                TaskTrackerScreen(timeTrackerViewModel: _timeTrackerViewModel, isFullyShown: $timeTrackerViewModel.isTrackerScreenFullyShown)
+                    .background(Color(timeTrackerViewModel.selectedActivity.rawValue))
+                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                    .offset(y: !timeTrackerViewModel.isTrackerStarted() ? taskTrackerScreenOffset : UIScreen.main.bounds.height * offsetHigh)
+                    .offset(y: taskTrackerTranslation)
+                    .animation(.interactiveSpring())
+                    .gesture(
+                        DragGesture()
+                            .updating($taskTrackerTranslation) { gesture, state, _ in
+                                // Add drag effect only when taskTrackerScreen is up and swipe downs
+                                if !timeTrackerViewModel.isTrackerStarted() {
+                                    if (taskTrackerScreenOffset >= UIScreen.main.bounds.height * offsetLow || (taskTrackerScreenOffset < UIScreen.main.bounds.height * offsetLow && startPos.y < gesture.location.y)) {
+                                        if timeTrackerViewModel.isTrackerScreenFullyShown && gesture.translation.height < 10 {
+                                            state = 0
+                                        } else {
+                                            state = gesture.translation.height
+                                            //                                    isNotSwipping = false
+                                        }
+                                        //                                print("state \(state), with offset \( UIScreen.main.bounds.height * offsetHigh)")
+                                    }
                                 }
-                                print("state \(state)")
+                                
                             }
-                            
-                        }
-                        .onChanged { gesture in
-                            startPos = gesture.location
-                            if isNotSwipping {
-                                if startPos.y < UIScreen.main.bounds.height / 5 {
-                                    isNotSwipping.toggle()
+                            .onChanged { gesture in
+                                startPos = gesture.location
+                                if isNotSwipping {
+                                    if startPos.y < UIScreen.main.bounds.height / 5 {
+                                        isNotSwipping.toggle()
+                                    }
                                 }
                             }
-                        }
-                        .onEnded { gesture in
-                            if !timeTrackerViewModel.isTimerStarted() {
-                                if timeTrackerViewModel.isTrackerScreenFullyShown {
+                            .onEnded { gesture in
+                                //                            print("onended with translation \(taskTrackerTranslation), offset \(taskTrackerScreenOffset)")
+                                if !timeTrackerViewModel.isTrackerStarted() && timeTrackerViewModel.isTrackerScreenFullyShown {
+                                    print("is timer started \(timeTrackerViewModel.timeTrackerState)")
                                     // Handle Horizontal Swipe
                                     let gestureLocX = gesture.location.x
                                     let xDist =  abs(gestureLocX - startPos.x)
@@ -96,50 +106,43 @@ struct MainScreen: View {
                                         timeTrackerViewModel.toggleSelectedActivity()
                                         timeTrackerViewModel.playHapticEngine()
                                     }
+                                    
+                                    // Handle Vertical Swipe
+                                    //                                print("gesture translation height \(gesture.translation.height)")
+                                    if gesture.translation.height > 30 {
+                                        taskTrackerScreenOffset = UIScreen.main.bounds.height * offsetLow
+                                        isNotSwipping = true
+                                        print("down with offset \(taskTrackerScreenOffset)")
+                                        timeTrackerViewModel.isTrackerScreenFullyShown = false
+                                    }
+                                    
                                 }
-                                // Handle Vertical Swipe
-//                                print("gesture translation height \(gesture.translation.height)")
-                                 if gesture.translation.height < -10 {
+                                if gesture.translation.height < 0 {
                                     taskTrackerScreenOffset = UIScreen.main.bounds.height * offsetHigh
-                                    print("up with offset \(gesture.translation.height)")
+                                    print("up with offset \(taskTrackerScreenOffset)")
                                     timeTrackerViewModel.isTrackerScreenFullyShown = true
                                     isNotSwipping = false
                                     timeTrackerViewModel.playHapticEngine()
-                                } else if gesture.translation.height > 60 {
-                                    taskTrackerScreenOffset = UIScreen.main.bounds.height * offsetLow
-                                    isNotSwipping = true
-                                    print("down with offset \(taskTrackerScreenOffset)")
-                                    timeTrackerViewModel.isTrackerScreenFullyShown = false
-                                    timeTrackerViewModel.playHapticEngine()
                                 }
                             }
-                        }
-                )
-                .edgesIgnoringSafeArea(.bottom)
+                    )
+                    .edgesIgnoringSafeArea(.bottom)
                 
             }
-        
-        .navigationBarItems(
-            trailing:
-                NavigationLink(destination: SettingsView()) {
-                    Image(systemName: "gearshape.fill")
+            //        .navigationBarTitle("")
+            .navigationBarHidden(true)
+            .onAppear(perform: {
+                if timeTrackerViewModel.unfinishedTaskExist() {
+                    taskTrackerScreenOffset = UIScreen.main.bounds.height * offsetHigh
+                    timeTrackerViewModel.isTrackerScreenFullyShown = true
+                } else {
+                    timeTrackerViewModel.isTrackerScreenFullyShown = false
+                    taskTrackerScreenOffset = UIScreen.main.bounds.height * offsetLow
+                    print(taskTrackerScreenOffset)
                 }
-                
-        )
-        .navigationBarTitle(DateFormatter.month.string(from: currentDate), displayMode: .large)
-        .navigationBarHidden(timeTrackerViewModel.isTrackerScreenFullyShown || !isNotSwipping)
-        .onAppear(perform: {
-            if timeTrackerViewModel.unfinishedTaskExist() {
-                print("there is an unfinished task")
-                taskTrackerScreenOffset = UIScreen.main.bounds.height * offsetHigh
-                timeTrackerViewModel.isTrackerScreenFullyShown = true
-            } else {
-                timeTrackerViewModel.isTrackerScreenFullyShown = false
-                taskTrackerScreenOffset = UIScreen.main.bounds.height * offsetLow
-                print(taskTrackerScreenOffset)
-            }
-        })
-        } // NavigationView
+            })
+        }
+        .navigationViewStyle(StackNavigationViewStyle())// NavigationView
     } // Body
 } // MainScreen
 
@@ -158,10 +161,10 @@ extension MainScreen {
         return String(calendar.component(.day, from: date))
     }
     func isCurrentDate(date: Date) -> Bool {
-        return calendar.component(.day, from: date) == calendar.component(.day, from: Date())
+        return calendar.isDateInToday(date)
     }
     func isSelectedDateIsToday(date: Date) -> Bool {
-        return (calendar.component(.day, from: timeTrackerViewModel.selectedDate), calendar.component(.day, from: Date())) == (calendar.component(.day, from: Date()), calendar.component(.day, from: date))
+        return calendar.isDateInToday(timeTrackerViewModel.selectedDate)
     }
     
 }
