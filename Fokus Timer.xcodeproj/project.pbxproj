@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		82003315252317270064D16E /* PagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82003314252317270064D16E /* PagerView.swift */; };
-		820142F9250BC1FE003690ED /* System.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820142F7250BC1FE003690ED /* System.swift */; };
-		820142FA250BC1FE003690ED /* Feedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820142F8250BC1FE003690ED /* Feedback.swift */; };
 		820142FC250BC7D4003690ED /* TimeTrackerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820142FB250BC7D4003690ED /* TimeTrackerViewModel.swift */; };
 		821CA0A0250F938500D35835 /* States.swift in Sources */ = {isa = PBXBuildFile; fileRef = 821CA09F250F938500D35835 /* States.swift */; };
 		8226B29D2536045600C8BB02 /* Keyboard+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8226B29C2536045600C8BB02 /* Keyboard+.swift */; };
@@ -100,8 +98,6 @@
 
 /* Begin PBXFileReference section */
 		82003314252317270064D16E /* PagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagerView.swift; sourceTree = "<group>"; };
-		820142F7250BC1FE003690ED /* System.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = System.swift; sourceTree = "<group>"; };
-		820142F8250BC1FE003690ED /* Feedback.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Feedback.swift; sourceTree = "<group>"; };
 		820142FB250BC7D4003690ED /* TimeTrackerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTrackerViewModel.swift; sourceTree = "<group>"; };
 		821CA09F250F938500D35835 /* States.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = States.swift; sourceTree = "<group>"; };
 		8226B29C2536045600C8BB02 /* Keyboard+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Keyboard+.swift"; sourceTree = "<group>"; };
@@ -181,13 +177,35 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		820142F6250BC1FE003690ED /* Feedback */ = {
+		8216E5B1254B225F008D5DD5 /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				820142F7250BC1FE003690ED /* System.swift */,
-				820142F8250BC1FE003690ED /* Feedback.swift */,
+				82E7553C24EEA01F0040801A /* Fokus_Timer.xcdatamodeld */,
+				82448928251BA961001C42BA /* CoreDataHelper.swift */,
+				82B5BAE1252B76C8003E1E02 /* DataManager.swift */,
 			);
-			path = Feedback;
+			path = Data;
+			sourceTree = "<group>";
+		};
+		8216E5B5254B2278008D5DD5 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				82E7554124EEA0210040801A /* Assets.xcassets */,
+				82E7554624EEA0210040801A /* LaunchScreen.storyboard */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
+		8216E5B9254B2321008D5DD5 /* SupportingFiles */ = {
+			isa = PBXGroup;
+			children = (
+				82A767932518D02C00DE8A30 /* Task+.swift */,
+				82448922251BA916001C42BA /* Date+.swift */,
+				82E7553824EEA01F0040801A /* AppDelegate.swift */,
+				82E7553A24EEA01F0040801A /* SceneDelegate.swift */,
+				82E7554924EEA0210040801A /* Info.plist */,
+			);
+			path = SupportingFiles;
 			sourceTree = "<group>";
 		};
 		821CA0A32511082900D35835 /* Model */ = {
@@ -281,22 +299,14 @@
 		82E7553724EEA01F0040801A /* Fokus Timer */ = {
 			isa = PBXGroup;
 			children = (
-				820142F6250BC1FE003690ED /* Feedback */,
-				82E7553824EEA01F0040801A /* AppDelegate.swift */,
-				82E7553A24EEA01F0040801A /* SceneDelegate.swift */,
+				8216E5B9254B2321008D5DD5 /* SupportingFiles */,
 				82C0DEF124F498E100306B40 /* View */,
-				82E7554124EEA0210040801A /* Assets.xcassets */,
-				82E7554624EEA0210040801A /* LaunchScreen.storyboard */,
-				82E7554924EEA0210040801A /* Info.plist */,
-				82E7553C24EEA01F0040801A /* Fokus_Timer.xcdatamodeld */,
+				8216E5B5254B2278008D5DD5 /* Assets */,
 				82E7554324EEA0210040801A /* Preview Content */,
 				824B81C92536B48D00D9C7C2 /* ViewModel */,
 				821CA0A32511082900D35835 /* Model */,
-				82A767932518D02C00DE8A30 /* Task+.swift */,
 				82A767992518E93C00DE8A30 /* NotificationManager.swift */,
-				82448922251BA916001C42BA /* Date+.swift */,
-				82448928251BA961001C42BA /* CoreDataHelper.swift */,
-				82B5BAE1252B76C8003E1E02 /* DataManager.swift */,
+				8216E5B1254B225F008D5DD5 /* Data */,
 				8226B2AE253606E600C8BB02 /* KeyboardAdaptive */,
 			);
 			path = "Fokus Timer";
@@ -515,10 +525,8 @@
 				82A7679A2518E93C00DE8A30 /* NotificationManager.swift in Sources */,
 				822AB4DA24F774440046E578 /* FokusTimerWidget.intentdefinition in Sources */,
 				820142FC250BC7D4003690ED /* TimeTrackerViewModel.swift in Sources */,
-				820142F9250BC1FE003690ED /* System.swift in Sources */,
 				82A767A02518EC8100DE8A30 /* NotificationText.swift in Sources */,
 				82448929251BA961001C42BA /* CoreDataHelper.swift in Sources */,
-				820142FA250BC1FE003690ED /* Feedback.swift in Sources */,
 				824A13ED251C8D4300D793DA /* MainScreen.swift in Sources */,
 				82A379E82524CB780073BCE6 /* Calendar.swift in Sources */,
 				824B81BC25368FD300D9C7C2 /* SettingsView.swift in Sources */,
