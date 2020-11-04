@@ -56,7 +56,7 @@ class NotificationManager {
             
             UNUserNotificationCenter.current().add(request) { error in
                 guard error == nil else { return }
-                print("Notification scheduled")
+//                print("Notification scheduled")
             }
         }
     }
