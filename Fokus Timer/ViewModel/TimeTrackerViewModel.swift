@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import Combine
+import ActivityKit
 
 class TimeTrackerViewModel: ObservableObject {
   @Published var selectedActivity: ActivityState = .focus_time
@@ -46,6 +47,7 @@ class TimeTrackerViewModel: ObservableObject {
   private let longActivityFocusString = "Get up from your desk and take a quick break"
   private let longActivityBreakString = "Break time is important, but don't forget your focus task"
   var notifications: [NotificationText] = []
+    var fokusActivity: Activity<FokusTimeAttributes>?
   
   var trackerBags = Set<AnyCancellable>()
   var bags = Set<AnyCancellable>()
@@ -54,6 +56,11 @@ class TimeTrackerViewModel: ObservableObject {
   var dataManager = DataManager.shared
   var titleCharacterLimit = 50
   init() {
+//    dataManager.createFinishedTask(timeStart: Date.init(), timeStop: Date.init().addingTimeInterval(4000), title: "Learn Swift", type: ActivityState.focus_time.rawValue, timerState: timerState.rawValue)
+//    dataManager.createFinishedTask(timeStart: Date.init(), timeStop: Date.init().addingTimeInterval(1823), title: "Edit Keynote", type: ActivityState.focus_time.rawValue, timerState: timerState.rawValue)
+//    dataManager.createFinishedTask(timeStart: Date.init(), timeStop: Date.init().addingTimeInterval(1095), title: "Edit Keynote - 2", type: ActivityState.focus_time.rawValue, timerState: timerState.rawValue)
+//    dataManager.createFinishedTask(timeStart: Date.init(), timeStop: Date.init().addingTimeInterval(600), title: "Break - Learn Swift", type: ActivityState.break_time.rawValue, timerState: timerState.rawValue)
+//    dataManager.createFinishedTask(timeStart: Date.init(), timeStop: Date.init().addingTimeInterval(420), title: "Break - Edit Keynote", type: ActivityState.break_time.rawValue, timerState: timerState.rawValue)
     $selectedDate
       .receive(on: RunLoop.main)
       .sink { [weak self] date in
@@ -149,8 +156,10 @@ class TimeTrackerViewModel: ObservableObject {
       }.store(in: &trackerBags)
     
     setLongActivityNotification()
+      setLiveActivity(finishTime: timerTime, activityName: activityTitle)
     notificationManager.listScheduledNotifications()
   }
+  
   func saveStartedTimerToCoreData() {
     let timeStart = Date()
     let type = selectedActivity.rawValue
@@ -223,6 +232,22 @@ class TimeTrackerViewModel: ObservableObject {
     notificationManager.notifications = notifications
     notificationManager.schedule()
   }
+    
+    func setLiveActivity(finishTime: Int, activityName: String) {
+        let future = Calendar.current.date(byAdding: .second, value: finishTime, to: Date())
+        if let future = future {
+            let date = Date.now...future
+            let contentState = FokusTimeAttributes.ContentState(activityName: activityName, activityType: selectedActivity, timer: date, isCountingDown: timerState == .on ? true : false)
+            let attributes = FokusTimeAttributes()
+            
+            do {
+                fokusActivity = try Activity.request(attributes: attributes, contentState: contentState)
+                print("Requested a pizza delivery Live Activity \(String(describing: fokusActivity?.id)).")
+            } catch (let error) {
+                print("Error requesting pizza delivery Live Activity \(error.localizedDescription).")
+            }
+        }
+    }
   
   func displayTime(second: Int) -> String {
     let hours = "\(second / 3600)"

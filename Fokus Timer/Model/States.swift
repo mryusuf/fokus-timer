@@ -7,13 +7,6 @@
 
 import Foundation
 
-enum ActivityState: String, CaseIterable, Identifiable {
-    case focus_time = "focus"
-    case break_time = "break"
-
-    var id: String { self.rawValue }
-}
-
 enum TimeTrackerState: String, CaseIterable, Identifiable {
     case idle
     case started

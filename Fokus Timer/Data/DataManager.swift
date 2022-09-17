@@ -12,6 +12,7 @@ protocol DataManagerProtocol {
     func fetchUnfinishedTask() -> Task?
     func createTask(timeStart: Date, title: String, type: String, timerState: String)
     func updateUnfinishedTask(for task: Task, timeStop: Date)
+  func createFinishedTask(timeStart: Date, timeStop: Date, title: String, type: String, timerState: String)
 }
 
 class DataManager: DataManagerProtocol {
@@ -62,6 +63,18 @@ class DataManager: DataManagerProtocol {
         task.timer = timerState
         dbHelper.create(task)
     }
+  
+  func createFinishedTask(timeStart: Date, timeStop: Date, title: String, type: String, timerState: String) {
+      let task = Task(context: dbHelper.context)
+      task.task_id = UUID()
+      task.title = title
+      task.time_start = timeStart
+      task.type = type
+      task.timer = timerState
+    task.time_stop = timeStop
+    task.is_finished = true
+      dbHelper.create(task)
+  }
     
     func updateUnfinishedTask(for task: Task, timeStop: Date) {
         let taskToEdit = task

@@ -51,7 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let timeRecieved = Date()
         let id = notification.request.identifier
         print("Notification with id \(id) is received")
-        if let unfinishedTask = DataManager.shared.fetchUnfinishedTask() {
+        if id == "main-timer", let unfinishedTask = DataManager.shared.fetchUnfinishedTask() {
             DataManager.shared.updateUnfinishedTask(for: unfinishedTask, timeStop: timeRecieved)
         }
         if #available(iOS 14, *) {
